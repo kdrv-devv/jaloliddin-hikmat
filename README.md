@@ -166,6 +166,11 @@ baribir yig‘ilib boraveradi.
    kiriting, faqat manzilni almashtiring:
    `NEXT_PUBLIC_SITE_URL="https://jaloliddin.uz"`. `ADMIN_PASSWORD_HASH` ni
    `.env.local` dagidek base64 ko‘rinishida qoldiring.
+
+   > `NEXT_PUBLIC_SITE_URL` ni **bo‘sh qiymat bilan qo‘shib qo‘ymang** — u
+   > sitemap, RSS va OG teglaridagi manzillarni belgilaydi. Qiymat bo‘sh yoki
+   > buzuq bo‘lsa build yiqilmaydi, lekin manzillar `https://jaloliddin.uz`
+   > ga qaytadi.
 4. Atlas’da **Network Access** → `0.0.0.0/0` qo‘shilganiga ishonch hosil
    qiling.
 5. **Deploy**. Keyin **Settings → Domains** da `jaloliddin.uz` domenini
