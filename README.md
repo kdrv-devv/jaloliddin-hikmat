@@ -167,6 +167,13 @@ baribir yig‘ilib boraveradi.
    `NEXT_PUBLIC_SITE_URL="https://jaloliddin.uz"`. `ADMIN_PASSWORD_HASH` ni
    `.env.local` dagidek base64 ko‘rinishida qoldiring.
 
+   > **Qiymatlarni qo‘shtirnoqsiz yopishtiring.** `.env.local` da
+   > `MONGODB_URI="mongodb+srv://…"` deb yoziladi, Vercel paneliga esa faqat
+   > `mongodb+srv://…` qismi kerak — panel qo‘shtirnoqni qiymatning ichiga
+   > qo‘shib saqlaydi va ulanish `Invalid scheme` xatosi bilan yiqiladi.
+   > (Kod endi qo‘shtirnoq va ortiqcha probelni o‘zi tozalaydi, ammo toza
+   > qo‘yilgani ma’qul.)
+   >
    > `NEXT_PUBLIC_SITE_URL` ni **bo‘sh qiymat bilan qo‘shib qo‘ymang** — u
    > sitemap, RSS va OG teglaridagi manzillarni belgilaydi. Qiymat bo‘sh yoki
    > buzuq bo‘lsa build yiqilmaydi, lekin manzillar `https://jaloliddin.uz`

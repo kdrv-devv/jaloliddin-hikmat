@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
+import { envValue } from "./env";
 import {
   SESSION_COOKIE,
   SESSION_TTL_SECONDS,
@@ -41,21 +42,8 @@ export async function endSession(): Promise<void> {
  * to'g'ridan-to'g'ri berilgan joyda (masalan Vercel paneli) xom hash ham
  * ishlayveradi — ikkalasi ham qabul qilinadi.
  */
-/**
- * Vercel kabi panellarda qiymat qo'shtirnoq bilan birga nusxalanib qolishi
- * yoki oxirida probel qolishi mumkin — ular qiymatning bir qismi bo'lib
- * hisoblanadi va solishtiruvni buzadi. Shuning uchun tozalab olamiz.
- */
-function cleanEnvValue(value: string): string {
-  const trimmed = value.trim();
-  const quoted =
-    (trimmed.startsWith('"') && trimmed.endsWith('"')) ||
-    (trimmed.startsWith("'") && trimmed.endsWith("'"));
-  return quoted ? trimmed.slice(1, -1).trim() : trimmed;
-}
-
 function decodePasswordHash(value: string): string {
-  const trimmed = cleanEnvValue(value);
+  const trimmed = envValue(value);
   if (trimmed.startsWith("$2")) return trimmed;
   try {
     const decoded = Buffer.from(trimmed, "base64").toString("utf8");
@@ -86,7 +74,7 @@ export async function verifyCredentials(
   // Ikkala tekshiruv ham bajariladi: javob vaqti foydalanuvchi nomi to'g'ri
   // yoki noto'g'riligini oshkor qilmasin.
   const passwordOk = await bcrypt.compare(password, hash);
-  const userOk = timingSafeEqual(username, cleanEnvValue(expectedUser));
+  const userOk = timingSafeEqual(username, envValue(expectedUser));
 
   // Foydalanuvchiga umumiy xabar boradi, sabab esa faqat server jurnalida —
   // sozlamadagi xatoni topish uchun (Vercel → Logs).

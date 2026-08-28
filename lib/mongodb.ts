@@ -1,8 +1,9 @@
 import { MongoClient, type Db, type Collection } from "mongodb";
+import { envValue } from "./env";
 import type { PostDoc, ViewDoc } from "./types";
 
-const uri = process.env.MONGODB_URI;
-const dbName = process.env.MONGODB_DB ?? "jaloliddin";
+const uri = envValue(process.env.MONGODB_URI);
+const dbName = envValue(process.env.MONGODB_DB) || "jaloliddin";
 
 /**
  * The client is cached on globalThis so that Next's dev-time module reloading
@@ -15,7 +16,14 @@ const globalForMongo = globalThis as unknown as {
 function getClientPromise(): Promise<MongoClient> {
   if (!uri) {
     throw new Error(
-      "MONGODB_URI aniqlanmagan. `.env.local` faylida ulanish satrini ko'rsating.",
+      "MONGODB_URI aniqlanmagan. `.env.local` faylida (Vercel'da esa Environment Variables bo'limida) ulanish satrini ko'rsating.",
+    );
+  }
+  if (!/^mongodb(\+srv)?:\/\//.test(uri)) {
+    throw new Error(
+      "MONGODB_URI `mongodb+srv://` yoki `mongodb://` bilan boshlanishi kerak. " +
+        "Ko'pincha sabab: qiymat qo'shtirnoqlari bilan yoki `MONGODB_URI=` qismi bilan birga nusxalangan. " +
+        "Panelga faqat satrning o'zini, qo'shtirnoqsiz qo'ying.",
     );
   }
   if (!globalForMongo._mongoClientPromise) {
