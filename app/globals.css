@@ -1,0 +1,477 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   Ranglar — OKLCH. Yorug' rejim: sof oq yuza, brendni chuqur archa-yashil
+   olib yuradi; ikkinchi ovoz — iliq gil (terracotta) teglar uchun.
+   Qorong'i rejim: neytral qora-kulrang yuza, yashil yorug'lik kabi.
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  --bg: oklch(1 0 0);
+  --surface: oklch(0.974 0.007 155);
+  --surface-2: oklch(0.955 0.009 155);
+  --line: oklch(0.905 0.011 155);
+  --line-strong: oklch(0.845 0.015 155);
+
+  --ink: oklch(0.2 0.018 155);
+  --ink-soft: oklch(0.36 0.017 155);
+  --muted: oklch(0.48 0.016 155);
+
+  --primary: oklch(0.4 0.09 152);
+  --primary-hover: oklch(0.33 0.082 152);
+  --primary-soft: oklch(0.955 0.024 152);
+  --primary-on: oklch(0.99 0.005 152);
+
+  --accent: oklch(0.55 0.135 38);
+  --accent-ink: oklch(0.41 0.105 36);
+  --accent-soft: oklch(0.958 0.022 42);
+
+  --danger: oklch(0.48 0.16 27);
+  --danger-soft: oklch(0.96 0.025 27);
+
+  --ring: oklch(0.55 0.11 152);
+  --shadow-color: 155deg 20% 12%;
+
+  --font-serif: var(--font-alegreya), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-alegreya-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, monospace;
+
+  --measure: 34rem;
+  --page: 46rem;
+  --wide: 68rem;
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+
+  --z-sticky: 20;
+  --z-overlay: 40;
+  --z-modal: 50;
+  --z-toast: 60;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --bg: oklch(0.16 0 0);
+    --surface: oklch(0.203 0 0);
+    --surface-2: oklch(0.242 0 0);
+    --line: oklch(0.288 0.004 155);
+    --line-strong: oklch(0.38 0.006 155);
+
+    --ink: oklch(0.935 0.008 150);
+    --ink-soft: oklch(0.8 0.01 150);
+    --muted: oklch(0.68 0.012 150);
+
+    --primary: oklch(0.79 0.13 150);
+    --primary-hover: oklch(0.87 0.13 150);
+    --primary-soft: oklch(0.27 0.038 152);
+    --primary-on: oklch(0.16 0.02 152);
+
+    --accent: oklch(0.78 0.12 45);
+    --accent-ink: oklch(0.85 0.1 45);
+    --accent-soft: oklch(0.295 0.045 40);
+
+    --danger: oklch(0.75 0.14 25);
+    --danger-soft: oklch(0.29 0.06 25);
+
+    --ring: oklch(0.72 0.11 150);
+    --shadow-color: 0deg 0% 0%;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: oklch(0.16 0 0);
+  --surface: oklch(0.203 0 0);
+  --surface-2: oklch(0.242 0 0);
+  --line: oklch(0.288 0.004 155);
+  --line-strong: oklch(0.38 0.006 155);
+
+  --ink: oklch(0.935 0.008 150);
+  --ink-soft: oklch(0.8 0.01 150);
+  --muted: oklch(0.68 0.012 150);
+
+  --primary: oklch(0.79 0.13 150);
+  --primary-hover: oklch(0.87 0.13 150);
+  --primary-soft: oklch(0.27 0.038 152);
+  --primary-on: oklch(0.16 0.02 152);
+
+  --accent: oklch(0.78 0.12 45);
+  --accent-ink: oklch(0.85 0.1 45);
+  --accent-soft: oklch(0.295 0.045 40);
+
+  --danger: oklch(0.75 0.14 25);
+  --danger-soft: oklch(0.29 0.06 25);
+
+  --ring: oklch(0.72 0.11 150);
+  --shadow-color: 0deg 0% 0%;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-muted: var(--muted);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-on: var(--primary-on);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+
+  --font-serif: var(--font-serif);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  --ease-quint: var(--ease-out-quint);
+}
+
+/* ==========================================================================
+   Asos
+   ========================================================================== */
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background-color: var(--primary-soft);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Klaviatura foydalanuvchilari uchun asosiy kontentga o'tish */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: var(--z-toast);
+  padding: 0.6rem 1rem;
+  background: var(--ink);
+  color: var(--bg);
+  border-radius: 0.5rem;
+  font-size: 0.9375rem;
+  transition: top 220ms var(--ease-out-quint);
+}
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* ==========================================================================
+   Maqola tipografiyasi — o'qishga mo'ljallangan
+   ========================================================================== */
+
+.prose {
+  font-family: var(--font-serif);
+  font-size: 1.1875rem;
+  line-height: 1.75;
+  color: var(--ink);
+  letter-spacing: 0.002em;
+  text-wrap: pretty;
+  hanging-punctuation: first last;
+}
+
+@media (min-width: 40rem) {
+  .prose {
+    font-size: 1.25rem;
+    line-height: 1.78;
+  }
+}
+
+.prose > * + * {
+  margin-top: 1.15em;
+}
+
+.prose h2,
+.prose h3,
+.prose h4 {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+  scroll-margin-top: 6rem;
+}
+
+.prose h2 {
+  font-size: 1.55em;
+  margin-top: 2.1em;
+  margin-bottom: 0.1em;
+}
+
+.prose h3 {
+  font-size: 1.22em;
+  margin-top: 1.7em;
+  margin-bottom: 0.05em;
+}
+
+.prose h4 {
+  font-size: 1.05em;
+  margin-top: 1.5em;
+}
+
+/* Sarlavha yonidagi qisqa yashil shtrix */
+.prose h2::before {
+  content: "";
+  display: block;
+  width: 1.75rem;
+  height: 2px;
+  margin-bottom: 0.7rem;
+  background: var(--primary);
+  opacity: 0.8;
+}
+
+.prose a {
+  color: var(--primary);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: color-mix(in oklch, var(--primary) 40%, transparent);
+  transition: text-decoration-color 180ms var(--ease-out-quart);
+}
+.prose a:hover {
+  text-decoration-color: var(--primary);
+}
+
+.prose strong {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.prose em {
+  font-style: italic;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.35em;
+}
+.prose li + li {
+  margin-top: 0.4em;
+}
+.prose ul {
+  list-style: none;
+  padding-left: 1.2em;
+}
+.prose ul > li {
+  position: relative;
+}
+.prose ul > li::before {
+  content: "";
+  position: absolute;
+  left: -1em;
+  top: 0.72em;
+  width: 0.34em;
+  height: 0.34em;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0.65;
+}
+.prose ol {
+  list-style: decimal;
+}
+.prose ol > li::marker {
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 0.85em;
+}
+
+/* Iqtibos: chap chekka chizig'isiz — chekinish va belgi bilan */
+.prose blockquote {
+  margin-top: 2em;
+  margin-bottom: 2em;
+  padding-left: 1.4em;
+  font-style: italic;
+  color: var(--ink-soft);
+  position: relative;
+}
+.prose blockquote::before {
+  content: "”";
+  position: absolute;
+  left: -0.05em;
+  top: -0.15em;
+  font-size: 2.4em;
+  line-height: 1;
+  color: var(--primary);
+  opacity: 0.35;
+}
+.prose blockquote p + p {
+  margin-top: 0.8em;
+}
+
+.prose hr {
+  border: 0;
+  height: 1px;
+  background: var(--line);
+  margin-block: 2.6em;
+}
+
+.prose img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin-block: 1.8em;
+}
+
+.prose figure figcaption,
+.prose img + em {
+  font-family: var(--font-sans);
+  font-size: 0.85em;
+  color: var(--muted);
+}
+
+.prose code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--surface-2);
+  padding: 0.15em 0.38em;
+  border-radius: 0.3rem;
+  word-break: break-word;
+}
+
+.prose pre {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+  padding: 1rem 1.1rem;
+  overflow-x: auto;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-block: 1.8em;
+}
+.prose pre code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-sans);
+  font-size: 0.9em;
+  margin-block: 1.8em;
+}
+.prose th,
+.prose td {
+  border-bottom: 1px solid var(--line);
+  padding: 0.6em 0.7em;
+  text-align: left;
+}
+.prose th {
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+/* Jadvallar mobil ekranda sahifani emas, o'zini suradi */
+.prose .table-scroll {
+  overflow-x: auto;
+}
+
+.prose sup a {
+  text-decoration: none;
+  font-size: 0.8em;
+  padding-inline: 0.15em;
+}
+
+.prose .footnotes {
+  margin-top: 3em;
+  padding-top: 1.5em;
+  border-top: 1px solid var(--line);
+  font-size: 0.9em;
+  color: var(--muted);
+}
+
+/* ==========================================================================
+   Harakat
+   ========================================================================== */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Kontent sukut bo'yicha ko'rinadi; animatsiya faqat uni bezaydi. */
+.rise {
+  animation: rise 620ms var(--ease-out-quint) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .rise {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ==========================================================================
+   Mavzu tugmasi — belgisi JS'siz ham to'g'ri ko'rinadi
+   ========================================================================== */
+
+.icon-when-dark {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .icon-when-light {
+    display: none;
+  }
+  :root:not([data-theme="light"]) .icon-when-dark {
+    display: block;
+  }
+}
+
+:root[data-theme="dark"] .icon-when-light {
+  display: none;
+}
+:root[data-theme="dark"] .icon-when-dark {
+  display: block;
+}
+:root[data-theme="light"] .icon-when-light {
+  display: block;
+}
+:root[data-theme="light"] .icon-when-dark {
+  display: none;
+}
