@@ -134,7 +134,32 @@ kifoya.
 
 ---
 
-## 7. Ko‘rishlar hisobi
+## 7. Sayt sahifalarini tahrirlash
+
+Yozuvlarga kirmaydigan doimiy matnlar ham panel orqali o‘zgaradi — kodga
+tegish shart emas. `/admin` → **Sahifalar**:
+
+| Sahifa | Nima tahrirlanadi |
+| --- | --- |
+| **Bosh sahifa** (`/`) | katta sarlavha va uning ostidagi tanishtiruv |
+| **«Haqida» sahifasi** (`/haqida`) | sarlavha va to‘liq matn (Markdown) |
+
+Chapda maydonlar, o‘ngda — saytdagi aynan o‘sha ko‘rinish. **Saqlash**
+(yoki `⌘S` / `Ctrl+S`) bosilgach sahifa keshi darhol yangilanadi.
+
+Matnlar `pages` kolleksiyasida saqlanadi. Baza bo‘sh bo‘lsa yoki unga
+ulanib bo‘lmasa, sayt `lib/content.ts` faylidagi **dastlabki matnni**
+ko‘rsatadi — ya’ni sahifa hech qachon bo‘sh qolmaydi. **Dastlabki matn**
+tugmasi maydonlarni o‘sha matn bilan to‘ldiradi (saqlaguningizcha saytga
+tegmaydi).
+
+Yangi maydon yoki yangi sahifa qo‘shish uchun `lib/content.ts` dagi
+`PAGE_DEFINITIONS` ro‘yxatiga yozuv qo‘shiladi — panel, tekshiruv va
+ko‘rinish o‘shandan avtomatik quriladi.
+
+---
+
+## 8. Ko‘rishlar hisobi
 
 Har bir yozuv nechta odam o‘qigani saqlanadi.
 
@@ -158,7 +183,7 @@ baribir yig‘ilib boraveradi.
 
 ---
 
-## 8. Vercel’ga joylashtirish
+## 9. Vercel’ga joylashtirish
 
 1. Loyihani GitHub’ga yuklang (`.env.local` `.gitignore`da — u yuklanmaydi).
 2. <https://vercel.com/new> → repozitoriyni tanlang.
@@ -185,7 +210,7 @@ baribir yig‘ilib boraveradi.
 
 ---
 
-## 9. Loyiha tuzilishi
+## 10. Loyiha tuzilishi
 
 ```
 app/
@@ -194,11 +219,11 @@ app/
     [slug]/          yozuv sahifasi (+ loading skeleton)
     yozuvlar/        arxiv, yillar bo'yicha
     teg/[tag]/       teg bo'yicha yozuvlar
-    haqida/          "Haqida" sahifasi  ← matnni shu yerda tahrirlang
+    haqida/          "Haqida" sahifasi (matni bazadan, paneldan tahrirlanadi)
   admin/
     login/           kirish sahifasi
-    (panel)/         ro'yxat, yangi yozuv, tahrir
-  api/admin/         login, logout, posts CRUD, preview
+    (panel)/         ro'yxat, yangi yozuv, tahrir, sahifalar
+  api/admin/         login, logout, posts CRUD, pages, preview
   api/views/         ko'rishlarni qayd qilish
   rss.xml/           RSS lentasi (saytda havolasi ko'rsatilmaydi)
   sitemap.ts robots.ts
@@ -206,6 +231,8 @@ components/          UI: header, footer, ro'yxat, belgilar, admin
 lib/
   mongodb.ts         ulanish (dev'da qayta ishlatiladi)
   posts.ts           barcha so'rovlar; ochiq o'qishlar xatoda bo'sh qaytadi
+  content.ts         sahifa matnlarining maydonlari va dastlabki qiymati
+  pages.ts           sahifa matnlarini o'qish va saqlash
   auth.ts session.ts kirish va sessiya
   markdown.ts        Markdown → xavfsiz HTML
   device.ts          brauzerdagi qurilma kaliti
@@ -216,7 +243,7 @@ scripts/             seed va kalit yaratuvchi skriptlar
 
 ---
 
-## 10. Dizayn tizimi
+## 11. Dizayn tizimi
 
 Barcha ranglar `app/globals.css` faylining boshida OKLCH’da, ikkita to‘plam
 bilan: yorug‘ va qorong‘i rejim. Ularni o‘zgartirsangiz, butun sayt
@@ -237,7 +264,7 @@ Maqola tipografiyasi `app/globals.css` dagi `.prose` sinfida: qator uzunligi
 
 ---
 
-## 11. Yodda tutish uchun
+## 12. Yodda tutish uchun
 
 - `/haqida` sahifasidagi matn hozircha kodda turibdi
   (`app/(site)/haqida/page.tsx`) — uni o‘zingizga moslang.

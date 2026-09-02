@@ -4,14 +4,16 @@ import { ArrowRightIcon } from "@/components/icons";
 import { JuniperSprig } from "@/components/marks";
 import { PostList } from "@/components/post-list";
 import { isDatabaseConfigured } from "@/lib/mongodb";
+import { getPageContent } from "@/lib/pages";
 import { countPublishedPosts, listPublishedPosts } from "@/lib/posts";
 
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const [posts, total] = await Promise.all([
+  const [posts, total, content] = await Promise.all([
     listPublishedPosts({ limit: 7 }),
     countPublishedPosts(),
+    getPageContent("bosh"),
   ]);
   const configured = isDatabaseConfigured();
 
@@ -23,12 +25,10 @@ export default async function HomePage() {
         />
         <div className="rise relative max-w-[34rem]">
           <h1 className="font-serif text-[2.15rem] leading-[1.1] font-medium tracking-[-0.025em] text-balance text-ink sm:text-[3.25rem] sm:leading-[1.05]">
-            Sekin yoziladigan, sekin o’qiladigan yozuvlar.
+            {content.heading}
           </h1>
           <p className="mt-5 max-w-[46ch] text-[1.0625rem] leading-[1.62] text-ink-soft sm:mt-6 sm:text-[1.125rem]">
-            Men Jaloliddin. Bu yerda kundalik kuzatuvlarim, o’qigan
-            kitoblarim va oxirigacha o’ylab ko’rilgan fikrlarim yig’ilib
-            boradi — shoshilmasdan, birma-bir.
+            {content.intro}
           </p>
         </div>
       </section>

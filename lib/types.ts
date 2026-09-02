@@ -60,3 +60,13 @@ export type PostInput = {
   coverAlt: string | null;
   publishedAt: string | null;
 };
+
+/**
+ * Sayt sahifasining tahrirlangan matnlari. `_id` — sahifa kaliti ("bosh",
+ * "haqida"), `values` esa `lib/content.ts` dagi maydonlar bo'yicha matnlar.
+ */
+export interface PageDoc {
+  _id: string;
+  values: Record<string, string>;
+  updatedAt: Date;
+}

@@ -1,6 +1,6 @@
 import { MongoClient, type Db, type Collection } from "mongodb";
 import { envValue } from "./env";
-import type { PostDoc, ViewDoc } from "./types";
+import type { PageDoc, PostDoc, ViewDoc } from "./types";
 
 const uri = envValue(process.env.MONGODB_URI);
 const dbName = envValue(process.env.MONGODB_DB) || "jaloliddin";
@@ -49,6 +49,11 @@ export async function getPosts(): Promise<Collection<PostDoc>> {
 export async function getViews(): Promise<Collection<ViewDoc>> {
   const db = await getDb();
   return db.collection<ViewDoc>("views");
+}
+
+export async function getPages(): Promise<Collection<PageDoc>> {
+  const db = await getDb();
+  return db.collection<PageDoc>("pages");
 }
 
 export function isDatabaseConfigured(): boolean {

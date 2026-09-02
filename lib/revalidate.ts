@@ -9,3 +9,8 @@ export function revalidateBlog(slug: string, tags: string[]): void {
     revalidatePath(`/teg/${encodeURIComponent(tag)}`);
   }
 }
+
+/** Sahifa matni o'zgargach, o'sha sahifaning keshini yangilaydi. */
+export function revalidatePage(path: string): void {
+  revalidatePath(path);
+}
