@@ -210,7 +210,71 @@ baribir yig‘ilib boraveradi.
 
 ---
 
-## 10. Loyiha tuzilishi
+## 10. SEO va Google Search Console
+
+### O‘z-o‘zidan ishlaydigan qismi
+
+| Nima | Qayerda |
+| --- | --- |
+| `canonical`, `og:*`, `twitter:*` teglari — har bir sahifada o‘ziniki | `app/**/page.tsx` |
+| `sitemap.xml` — barcha yozuv, teg va sahifalar, aniq `lastmod` bilan | `app/sitemap.ts` |
+| `robots.txt` + sitemap havolasi, `/admin` va `/api` yopiq | `app/robots.ts` |
+| Ijtimoiy tarmoq rasmi (1200×630) — har bir yozuvga sarlavhasi bilan | `app/opengraph-image.tsx`, `app/(site)/[slug]/opengraph-image.tsx` |
+| JSON-LD: `WebSite`, `Person`, `Blog`, `BlogPosting`, `BreadcrumbList`, `ItemList` | `lib/schema.ts` |
+| `www.sayt.uz` → `sayt.uz` (308) | `next.config.ts` |
+| Bo‘sh teg sahifasi `noindex` — “yupqa sahifa” jazosi bo‘lmasin | `app/(site)/teg/[tag]/page.tsx` |
+| Yozuvlar build paytida chiziladi (SSG) — tez ochiladi | `generateStaticParams` |
+| `max-image-preview:large` — natijalarda katta rasm | `app/layout.tsx` |
+
+### Search Console’ga qo‘shish
+
+1. **Manzil to‘g‘riligini tekshiring.** Vercel → Settings → Environment
+   Variables → `NEXT_PUBLIC_SITE_URL`. Qiymat **qo‘shtirnoqsiz** bo‘lsin:
+   `https://jaloliddinhikmat.uz`. (Qo‘shtirnoq bilan yozilgani uzoq vaqt
+   canonical va sitemap manzillarini `https://"https` qilib buzib turgan edi —
+   endi kod uni o‘zi tozalaydi, lekin toza yozilgani baribir ma’qul.)
+2. <https://search.google.com/search-console> → **Add property**. Ikki yo‘l bor:
+   - **Domain** (tavsiya) — DNS orqali tasdiqlanadi, `www` va boshqa
+     ost-domenlarni ham qamrab oladi;
+   - **URL prefix** — `https://jaloliddinhikmat.uz` deb yozib, «HTML tag»
+     usulini tanlang va kodni `GOOGLE_SITE_VERIFICATION` muhit
+     o‘zgaruvchisiga qo‘ying (Vercel’da ham), keyin qayta deploy qiling.
+3. **Sitemaps** bo‘limiga `sitemap.xml` ni yuboring.
+4. **URL Inspection** → bosh sahifa manzilini kiriting → **Request indexing**.
+   Har bir muhim sahifa uchun bir marta shunday qiling.
+5. Yangi yozuv chiqarganingizda ham o‘sha yozuvni «Request indexing» qiling —
+   sitemap o‘zi yangilanadi, lekin bu tezlatadi.
+
+> Natija bir kunda ko‘rinmaydi. Yangi domen odatda 3–14 kunda indeksga tushadi.
+> Search Console’dagi **Pages** bo‘limida qaysi sahifa indekslangani ko‘rinadi.
+
+Yandex uchun ham xuddi shunday: <https://webmaster.yandex.com> → saytni
+qo‘shing, tasdiqlash kodini `YANDEX_VERIFICATION` ga yozing.
+
+### Har bir sahifaning sarlavha va tavsifi
+
+`/admin` → **Sahifalar** → sahifani oching → **Qidiruvda ko‘rinishi**:
+
+- **Qidiruv sarlavhasi** — 60 belgigacha. Bo‘sh qoldirsangiz, saytning odatiy
+  sarlavhasi ishlatiladi.
+- **Qidiruv tavsifi** — 120–160 belgi eng yaxshisi. Bo‘sh qoldirsangiz, sahifa
+  matnining boshidan olinadi; matn juda qisqa bo‘lsa (masalan ikki so‘z),
+  saytning umumiy tavsifi ishlatiladi.
+
+O‘ng tomonda Google natijasining namunasi va belgilar hisobi turadi.
+
+### Yozuv yozayotganda
+
+- **Sarlavha** — asosiy so‘z boshida bo‘lsin, 60 belgigacha.
+- **Qisqa tavsif** (Sozlamalar bo‘limida) — bo‘sh qoldirmang: aynan shu matn
+  Google natijasida va ijtimoiy tarmoqda ko‘rinadi.
+- **Teglar** — har bir teg o‘z sahifasini oladi va ichki havolalarni ko‘paytiradi.
+- **Manzil (slug)** — bir marta tanlanadi. Nashrdan keyin o‘zgartirsangiz, eski
+  manzil 404 bo‘ladi va yig‘ilgan “og‘irlik” yo‘qoladi.
+
+---
+
+## 11. Loyiha tuzilishi
 
 ```
 app/
@@ -226,8 +290,11 @@ app/
   api/admin/         login, logout, posts CRUD, pages, preview
   api/views/         ko'rishlarni qayd qilish
   rss.xml/           RSS lentasi (saytda havolasi ko'rsatilmaydi)
+  opengraph-image.tsx  ijtimoiy tarmoq rasmi (yozuvlarniki [slug] ichida)
+  manifest.ts apple-icon.tsx
   sitemap.ts robots.ts
 components/          UI: header, footer, ro'yxat, belgilar, admin
+assets/              OG rasmlaridagi shrift
 lib/
   mongodb.ts         ulanish (dev'da qayta ishlatiladi)
   posts.ts           barcha so'rovlar; ochiq o'qishlar xatoda bo'sh qaytadi
@@ -235,6 +302,9 @@ lib/
   pages.ts           sahifa matnlarini o'qish va saqlash
   auth.ts session.ts kirish va sessiya
   markdown.ts        Markdown → xavfsiz HTML
+  schema.ts          JSON-LD (Google uchun ma'lumot tuguni)
+  og.tsx             ijtimoiy tarmoq rasmining chizilishi
+  site.ts            sayt manzili, canonical va OG yordamchilari
   device.ts          brauzerdagi qurilma kaliti
   validate.ts        yozuv maydonlarini tekshirish
 proxy.ts             /admin/* ni himoyalaydi
@@ -243,7 +313,7 @@ scripts/             seed va kalit yaratuvchi skriptlar
 
 ---
 
-## 11. Dizayn tizimi
+## 12. Dizayn tizimi
 
 Barcha ranglar `app/globals.css` faylining boshida OKLCH’da, ikkita to‘plam
 bilan: yorug‘ va qorong‘i rejim. Ularni o‘zgartirsangiz, butun sayt
@@ -264,7 +334,7 @@ Maqola tipografiyasi `app/globals.css` dagi `.prose` sinfida: qator uzunligi
 
 ---
 
-## 12. Yodda tutish uchun
+## 13. Yodda tutish uchun
 
 - `/haqida` sahifasidagi matn hozircha kodda turibdi
   (`app/(site)/haqida/page.tsx`) — uni o‘zingizga moslang.

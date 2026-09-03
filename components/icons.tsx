@@ -116,3 +116,36 @@ export const SpinnerIcon = (props: IconProps) => (
     <path d="M12 3.5a8.5 8.5 0 1 0 8.5 8.5" opacity="0.9" />
   </Icon>
 );
+
+export const DownloadIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <path d="M12 3.8v10.4M7.6 9.8 12 14.2l4.4-4.4" />
+    <path d="M4.6 16.4v2.1a1.7 1.7 0 0 0 1.7 1.7h11.4a1.7 1.7 0 0 0 1.7-1.7v-2.1" />
+  </Icon>
+);
+
+export const BookIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <path d="M4 4.6h5.2A2.8 2.8 0 0 1 12 7.4v12a2.4 2.4 0 0 0-2.4-2.4H4Z" />
+    <path d="M20 4.6h-5.2A2.8 2.8 0 0 0 12 7.4v12a2.4 2.4 0 0 1 2.4-2.4H20Z" />
+  </Icon>
+);
+
+export const MenuIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <path d="M4 7h16M4 12h16M4 17h16" />
+  </Icon>
+);
+
+/** Telegram — to'ldirilgan belgi, shuning uchun `Icon` qolipidan tashqarida. */
+export const TelegramIcon = (props: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    aria-hidden="true"
+    focusable="false"
+    {...props}
+  >
+    <path d="M21.6 4.3 2.9 11.5c-.9.35-.9 1.6.02 1.9l4.6 1.45 1.75 5.4c.22.68 1.1.85 1.55.3l2.5-3.05 4.7 3.45c.6.44 1.45.1 1.6-.62l3-14c.17-.8-.6-1.45-1.35-1.15Zm-3.1 3.1-7.6 6.8c-.2.18-.32.42-.35.68l-.27 2.4-1.2-3.7 9.05-6.5c.4-.28.8.28.37.63Z" />
+  </svg>
+);

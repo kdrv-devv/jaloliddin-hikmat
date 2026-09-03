@@ -6,6 +6,8 @@
  * qolgani shu yerdagi dastlabki qiymatlardan olinadi, shuning uchun baza
  * bo'sh bo'lsa ham sayt bugungi ko'rinishida turaveradi.
  */
+import { plainText } from "./text";
+
 
 export type PageFieldKind = "line" | "text" | "markdown";
 
@@ -15,6 +17,8 @@ export type PageField = {
   hint?: string;
   kind: PageFieldKind;
   maxLength: number;
+  /** Bo'sh qoldirilsa ham saqlanadigan maydon (SEO sarlavhasi kabi). */
+  optional?: boolean;
   /** Baza bo'sh bo'lganda ishlatiladigan matn. */
   fallback: string;
 };
@@ -25,6 +29,12 @@ export type PageDefinition = {
   /** Saytdagi manzili — ko'rish havolasi va yangilash uchun. */
   path: string;
   summary: string;
+  /** Qidiruv natijasi uchun: SEO maydonlari bo'sh qolganda nima ishlatiladi. */
+  seo: {
+    titleFallback: string;
+    /** Tavsif shu maydon matnidan olinadi (masalan "intro" yoki "body"). */
+    descriptionFrom: string;
+  };
   fields: PageField[];
 };
 
@@ -55,6 +65,7 @@ export const PAGE_DEFINITIONS: PageDefinition[] = [
     label: "Bosh sahifa",
     path: "/",
     summary: "Saytga kirgan odam birinchi o’qiydigan sarlavha va tanishtiruv.",
+    seo: { titleFallback: "Jaloliddin — yozuvlar", descriptionFrom: "intro" },
     fields: [
       {
         key: "heading",
@@ -72,6 +83,24 @@ export const PAGE_DEFINITIONS: PageDefinition[] = [
         maxLength: 400,
         fallback: HOME_INTRO,
       },
+      {
+        key: "seoTitle",
+        label: "Qidiruv sarlavhasi (ixtiyoriy)",
+        hint: "Google natijalarida ko’rinadigan sarlavha. 60 belgigacha bo’lgani ma’qul. Bo’sh qoldirsangiz, saytning odatiy sarlavhasi ishlatiladi.",
+        kind: "line",
+        maxLength: 70,
+        optional: true,
+        fallback: "",
+      },
+      {
+        key: "seoDescription",
+        label: "Qidiruv tavsifi (ixtiyoriy)",
+        hint: "Google natijalarida sarlavha ostidagi ikki qator. 120–160 belgi eng yaxshisi.",
+        kind: "text",
+        maxLength: 200,
+        optional: true,
+        fallback: "",
+      },
     ],
   },
   {
@@ -79,6 +108,7 @@ export const PAGE_DEFINITIONS: PageDefinition[] = [
     label: "«Haqida» sahifasi",
     path: "/haqida",
     summary: "O’zingiz va blog haqidagi to’liq matn.",
+    seo: { titleFallback: "Haqida — Jaloliddin", descriptionFrom: "body" },
     fields: [
       {
         key: "heading",
@@ -94,6 +124,24 @@ export const PAGE_DEFINITIONS: PageDefinition[] = [
         kind: "markdown",
         maxLength: 20_000,
         fallback: ABOUT_BODY,
+      },
+      {
+        key: "seoTitle",
+        label: "Qidiruv sarlavhasi (ixtiyoriy)",
+        hint: "Google natijalarida ko’rinadigan sarlavha. 60 belgigacha bo’lgani ma’qul. Bo’sh qoldirsangiz, saytning odatiy sarlavhasi ishlatiladi.",
+        kind: "line",
+        maxLength: 70,
+        optional: true,
+        fallback: "",
+      },
+      {
+        key: "seoDescription",
+        label: "Qidiruv tavsifi (ixtiyoriy)",
+        hint: "Google natijalarida sarlavha ostidagi ikki qator. 120–160 belgi eng yaxshisi.",
+        kind: "text",
+        maxLength: 200,
+        optional: true,
+        fallback: "",
       },
     ],
   },
@@ -141,7 +189,7 @@ export function validatePageValues(
     let value = String(body[field.key] ?? "").trim();
     // Bir qatorlik matnga tasodifan tushgan yangi qator sahifani buzmasin.
     if (field.kind === "line") value = value.replace(/\s+/g, " ");
-    if (!value) {
+    if (!value && !field.optional) {
       return {
         ok: false,
         error: `«${field.label}» bo’sh bo’lishi mumkin emas.`,
@@ -159,4 +207,27 @@ export function validatePageValues(
   }
 
   return { ok: true, data };
+}
+
+/**
+ * Sahifaning qidiruvdagi sarlavhasi va tavsifi.
+ *
+ * Tavsif tartibi: qo'lda yozilgani → sahifa matnidan olingani (agar u
+ * yetarlicha uzun bo'lsa) → saytning umumiy tavsifi. Juda qisqa tavsif
+ * (masalan ikki so'z) Google natijasida bo'sh joy bo'lib qoladi, shuning
+ * uchun u ishlatilmaydi.
+ */
+export function pageSeo(
+  definition: PageDefinition,
+  values: PageValues,
+  siteDescription: string,
+): { title: string; description: string } {
+  const title = values.seoTitle?.trim() || definition.seo.titleFallback;
+
+  const manual = values.seoDescription?.trim();
+  const auto = plainText(values[definition.seo.descriptionFrom] ?? "", 190);
+
+  const description = manual || (auto.length >= 80 ? auto : siteDescription);
+
+  return { title, description };
 }

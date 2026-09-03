@@ -3,19 +3,32 @@ import { formatDate, readingLabel } from "@/lib/format";
 import type { Post } from "@/lib/types";
 import { TagPill } from "./tag-pill";
 
-function Meta({ post }: { post: Post }) {
+function Meta({ post, showDate }: { post: Post; showDate: boolean }) {
   return (
     <p className="flex flex-wrap items-center gap-x-2.5 gap-y-1 font-sans text-[0.8125rem] text-muted">
-      <time dateTime={post.publishedAt ?? post.createdAt}>
-        {formatDate(post.publishedAt ?? post.createdAt)}
-      </time>
-      <span aria-hidden className="size-[3px] rounded-full bg-line-strong" />
+      {showDate ? (
+        <>
+          <time dateTime={post.publishedAt ?? post.createdAt}>
+            {formatDate(post.publishedAt ?? post.createdAt)}
+          </time>
+          <span aria-hidden className="size-[3px] rounded-full bg-line-strong" />
+        </>
+      ) : null}
       <span>{readingLabel(post.readingMinutes)}</span>
     </p>
   );
 }
 
-export function PostRow({ post, lead = false }: { post: Post; lead?: boolean }) {
+export function PostRow({
+  post,
+  lead = false,
+  showDate = true,
+}: {
+  post: Post;
+  lead?: boolean;
+  /** Sanani yashirish kerak bo'lganda — qarang: `SHOW_LIST_DATES`. */
+  showDate?: boolean;
+}) {
   return (
     <article className="group relative border-t border-line first:border-t-0">
       <Link
@@ -23,7 +36,7 @@ export function PostRow({ post, lead = false }: { post: Post; lead?: boolean }) 
         className="block py-7 outline-none sm:py-9"
         aria-labelledby={`post-${post.id}`}
       >
-        <Meta post={post} />
+        <Meta post={post} showDate={showDate} />
         <h2
           id={`post-${post.id}`}
           className={`mt-2 font-serif font-medium tracking-[-0.015em] text-balance text-ink transition-colors duration-200 group-hover:text-primary group-focus-visible:text-primary ${
@@ -56,9 +69,11 @@ export function PostRow({ post, lead = false }: { post: Post; lead?: boolean }) 
 export function PostList({
   posts,
   leadFirst = false,
+  showDate = true,
 }: {
   posts: Post[];
   leadFirst?: boolean;
+  showDate?: boolean;
 }) {
   return (
     <div>
@@ -67,6 +82,7 @@ export function PostList({
           key={post.id}
           post={post}
           lead={leadFirst && index === 0}
+          showDate={showDate}
         />
       ))}
     </div>

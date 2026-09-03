@@ -40,6 +40,24 @@ export const getPageContent = cache(
   },
 );
 
+/** Sahifa matni oxirgi marta qachon o'zgargani — sitemap'dagi `lastmod` uchun. */
+export const getPageUpdatedAt = cache(
+  async (key: string): Promise<Date | null> => {
+    requireDefinition(key);
+    if (!isDatabaseConfigured()) return null;
+    try {
+      const pages = await getPages();
+      const doc = await pages.findOne(
+        { _id: key },
+        { projection: { updatedAt: 1 } },
+      );
+      return doc?.updatedAt ?? null;
+    } catch {
+      return null;
+    }
+  },
+);
+
 /* --- Admin ------------------------------------------------------------- */
 
 /** Boshqaruv uchun: bazadagi xatolik yashirilmaydi. */

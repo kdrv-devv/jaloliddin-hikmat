@@ -2,28 +2,46 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ArrowLeftIcon, ArrowRightIcon, ArrowUpIcon } from "@/components/icons";
+import { JsonLd } from "@/components/json-ld";
 import { SprigDivider } from "@/components/marks";
 import { ReadingProgress } from "@/components/reading-progress";
 import { TagRow } from "@/components/tag-pill";
 import { ViewCounter } from "@/components/view-counter";
 import { formatDate, readingLabel } from "@/lib/format";
 import { renderMarkdown } from "@/lib/markdown";
-import { getNeighbours, getPublishedPost } from "@/lib/posts";
-import { absoluteUrl, site } from "@/lib/site";
+import { getNeighbours, getPublishedPost, listAllSlugs } from "@/lib/posts";
+import {
+  blog,
+  blogPosting,
+  breadcrumbs,
+  graph,
+  person,
+  website,
+} from "@/lib/schema";
+import { absoluteUrl, alternates, site } from "@/lib/site";
 
 export const revalidate = 60;
+
+/** Barcha yozuvlar build paytida chiziladi — sahifa keshdan darhol ochiladi. */
+export async function generateStaticParams() {
+  const slugs = await listAllSlugs();
+  return slugs.map(({ slug }) => ({ slug }));
+}
 
 export async function generateMetadata(
   props: PageProps<"/[slug]">,
 ): Promise<Metadata> {
   const { slug } = await props.params;
   const post = await getPublishedPost(slug);
-  if (!post) return { title: "Topilmadi" };
+  // Yo'q sahifa qidiruvga tushmasin.
+  if (!post) return { title: "Topilmadi", robots: { index: false, follow: false } };
 
   return {
     title: post.title,
     description: post.excerpt,
-    alternates: { canonical: `/${post.slug}` },
+    keywords: post.tags.length > 0 ? post.tags : undefined,
+    authors: [{ name: site.name, url: absoluteUrl("/haqida") }],
+    alternates: alternates(`/${post.slug}`),
     openGraph: {
       type: "article",
       title: post.title,
@@ -31,6 +49,7 @@ export async function generateMetadata(
       url: absoluteUrl(`/${post.slug}`),
       publishedTime: post.publishedAt ?? undefined,
       modifiedTime: post.updatedAt,
+      authors: [absoluteUrl("/haqida")],
       tags: post.tags,
       siteName: site.name,
       locale: site.locale,
@@ -53,26 +72,23 @@ export default async function PostPage(props: PageProps<"/[slug]">) {
     getNeighbours(post),
   ]);
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    headline: post.title,
-    description: post.excerpt,
-    datePublished: post.publishedAt ?? post.createdAt,
-    dateModified: post.updatedAt,
-    author: { "@type": "Person", name: site.name },
-    mainEntityOfPage: absoluteUrl(`/${post.slug}`),
-    keywords: post.tags.join(", "),
-    inLanguage: "uz",
-  };
+  const jsonLd = graph(
+    website(),
+    person(),
+    // Yozuv `isPartOf` orqali blogga bog'lanadi — o'sha tugun ham shu yerda.
+    blog(),
+    blogPosting(post),
+    breadcrumbs([
+      { name: "Bosh sahifa", path: "/" },
+      { name: "Yozuvlar", path: "/yozuvlar" },
+      { name: post.title, path: `/${post.slug}` },
+    ]),
+  );
 
   return (
     <>
       <ReadingProgress />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
 
       <article className="mx-auto w-full max-w-[44rem] px-5 sm:px-8">
         <header className="pt-10 pb-8 sm:pt-16 sm:pb-10">
@@ -106,6 +122,7 @@ export default async function PostPage(props: PageProps<"/[slug]">) {
             alt={post.coverAlt ?? ""}
             className="mb-10 w-full rounded-xl border border-line object-cover"
             loading="eager"
+            fetchPriority="high"
             decoding="async"
           />
         ) : null}

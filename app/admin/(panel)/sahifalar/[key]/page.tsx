@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { PageEditor } from "@/components/admin/page-editor";
 import { getPageDefinition } from "@/lib/content";
 import { readPageContent } from "@/lib/pages";
+import { site } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
@@ -21,5 +22,12 @@ export default async function EditPagePage(
   const definition = getPageDefinition(key);
   if (!definition) notFound();
   const values = await readPageContent(key);
-  return <PageEditor definition={definition} values={values} />;
+  return (
+    <PageEditor
+      definition={definition}
+      values={values}
+      domain={site.domain}
+      siteDescription={site.description}
+    />
+  );
 }

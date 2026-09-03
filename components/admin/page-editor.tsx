@@ -12,6 +12,7 @@ import {
 import { ArrowLeftIcon } from "@/components/icons";
 import {
   defaultPageValues,
+  pageSeo,
   type PageDefinition,
   type PageField,
   type PageValues,
@@ -20,12 +21,19 @@ import { Button, Field, Input, Textarea, useToast, useUnsavedGuard } from "./ui"
 
 type Pane = "write" | "preview";
 
+/** SEO maydonlari sahifa matni emas — ular alohida guruhda ko'rsatiladi. */
+const SEO_KEYS = ["seoTitle", "seoDescription"];
+
 export function PageEditor({
   definition,
   values,
+  domain,
+  siteDescription,
 }: {
   definition: PageDefinition;
   values: PageValues;
+  domain: string;
+  siteDescription: string;
 }) {
   const router = useRouter();
   const toast = useToast();
@@ -48,6 +56,15 @@ export function PageEditor({
   const set = useCallback((key: string, value: string) => {
     setDraft((current) => ({ ...current, [key]: value }));
   }, []);
+
+  const contentFields = useMemo(
+    () => definition.fields.filter((field) => !SEO_KEYS.includes(field.key)),
+    [definition],
+  );
+  const seoFields = useMemo(
+    () => definition.fields.filter((field) => SEO_KEYS.includes(field.key)),
+    [definition],
+  );
 
   const defaults = useMemo(() => defaultPageValues(definition), [definition]);
   const isDefault = useMemo(
@@ -180,7 +197,7 @@ export function PageEditor({
         >
           <p className="text-[0.9375rem] text-muted">{definition.summary}</p>
 
-          {definition.fields.map((field) => (
+          {contentFields.map((field) => (
             <Field
               key={field.key}
               label={field.label}
@@ -218,6 +235,53 @@ export function PageEditor({
             </Field>
           ))}
 
+          {seoFields.length > 0 ? (
+            <div className="space-y-5 border-t border-line pt-5">
+              <div>
+                <h2 className="text-[0.9375rem] font-medium text-ink">
+                  Qidiruvda ko’rinishi
+                </h2>
+                <p className="mt-1 text-[0.8125rem] text-muted">
+                  Ikkalasini ham bo’sh qoldirsangiz, Google sahifa matnidan
+                  o’zi oladi. O’ng tomonda namunasi ko’rinib turadi.
+                </p>
+              </div>
+              {seoFields.map((field) => (
+                <Field
+                  key={field.key}
+                  label={field.label}
+                  hint={hintFor(field, draft[field.key] ?? "")}
+                  error={
+                    fieldError?.field === field.key
+                      ? fieldError.message
+                      : undefined
+                  }
+                >
+                  {({ id, describedBy }) =>
+                    field.kind === "line" ? (
+                      <Input
+                        id={id}
+                        aria-describedby={describedBy}
+                        aria-invalid={fieldError?.field === field.key}
+                        value={draft[field.key] ?? ""}
+                        onChange={(event) => set(field.key, event.target.value)}
+                      />
+                    ) : (
+                      <Textarea
+                        id={id}
+                        aria-describedby={describedBy}
+                        aria-invalid={fieldError?.field === field.key}
+                        rows={3}
+                        value={draft[field.key] ?? ""}
+                        onChange={(event) => set(field.key, event.target.value)}
+                      />
+                    )
+                  }
+                </Field>
+              ))}
+            </div>
+          ) : null}
+
           {fieldError && !fieldError.field ? (
             <p
               role="alert"
@@ -248,18 +312,72 @@ export function PageEditor({
           }`}
         >
           <div className="max-w-[40rem]">
-            {definition.fields.map((field) => (
+            {contentFields.map((field) => (
               <FieldPreview
                 key={field.key}
                 field={field}
                 value={draft[field.key] ?? ""}
               />
             ))}
+
+            {seoFields.length > 0 ? (
+              <SearchPreview
+                definition={definition}
+                values={draft}
+                domain={domain}
+                siteDescription={siteDescription}
+              />
+            ) : null}
           </div>
         </section>
       </div>
     </div>
   );
+}
+
+/** Google natijasining taxminiy ko'rinishi — uzunlikni ko'z bilan tekshirish uchun. */
+function SearchPreview({
+  definition,
+  values,
+  domain,
+  siteDescription,
+}: {
+  definition: PageDefinition;
+  values: PageValues;
+  domain: string;
+  siteDescription: string;
+}) {
+  const { title, description } = pageSeo(definition, values, siteDescription);
+  const path = definition.path === "/" ? "" : definition.path.replace("/", " › ");
+
+  return (
+    <div className="mt-12 border-t border-line pt-6">
+      <h3 className="text-[0.8125rem] font-medium text-muted">
+        Google’da taxminan shunday ko’rinadi
+      </h3>
+      <div className="mt-3 rounded-xl border border-line px-4 py-4">
+        <p className="text-[0.8125rem] text-ink-soft">
+          {domain}
+          {path}
+        </p>
+        <p className="mt-1 font-sans text-[1.125rem] leading-snug text-primary">
+          {clampText(title, 60)}
+        </p>
+        <p className="mt-1 text-[0.875rem] leading-relaxed text-muted">
+          {clampText(description, 160)}
+        </p>
+      </div>
+      <p className="mt-2 text-[0.8125rem] text-muted">
+        Sarlavha {title.length}/60, tavsif {description.length}/160 belgi.
+        Undan uzunini Google qisqartirib ko’rsatadi.
+      </p>
+    </div>
+  );
+}
+
+/** Google natijada uzun matnni «…» bilan kesadi — namunada ham shunday. */
+function clampText(value: string, limit: number): string {
+  return value.length <= limit ? value : `${value.slice(0, limit - 1).trimEnd()}…`;
 }
 
 function hintFor(field: PageField, value: string): string {

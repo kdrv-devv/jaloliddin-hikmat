@@ -475,3 +475,141 @@ body {
 :root[data-theme="light"] .icon-when-dark {
   display: none;
 }
+
+/* ==========================================================================
+   Kitob muqovasi
+   ==========================================================================
+   Muqova tekis rasm emas — uch o'lchamli jism: old yuza, chap tomonda tikuv
+   yoni, o'ngda varaqlar to'plami. Tinch holatda faqat oldi ko'rinadi;
+   kartochka ustiga sichqoncha kelganda kitob Y o'qi bo'ylab ozgina buriladi
+   va o'ng yonidagi varaqlar chekkasi ko'zga tashlanadi — xuddi kitobni
+   qo'lda burab, orqa tomoniga qarayotgandek.
+   ========================================================================== */
+
+.book {
+  /* Kitob qalinligi — varaqlar va tikuv yonining kengligi. */
+  --book-depth: 16px;
+  --book-ratio: 64 / 100;
+  perspective: 900px;
+  perspective-origin: 62% 46%;
+}
+
+/* Kundalik kitobdan kengroq va yupqaroq — muqova rasmlari shu nisbatda. */
+.book-journal {
+  --book-depth: 12px;
+  --book-ratio: 70 / 100;
+}
+
+.book-block {
+  position: relative;
+  aspect-ratio: var(--book-ratio);
+  transform-style: preserve-3d;
+  transition: transform 760ms var(--ease-out-quint);
+}
+
+/* Butun kartochka sezgir: sichqoncha ham, klaviatura fokusi ham buradi. */
+.book-card:hover .book-block,
+.book-card:focus-within .book-block {
+  transform: rotateY(-17deg) rotateX(3deg) translateZ(8px);
+}
+
+.book-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  /* Chap chekka — tikuv tomoni, shuning uchun deyarli o'tkir. */
+  border-radius: 2px 5px 5px 2px;
+  background: var(--surface-2);
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.16),
+    0 10px 22px -12px rgb(0 0 0 / 0.4);
+}
+
+.book-face img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Muqova ustidagi tikuv soyasi — rasm tekis qog'oz emas, buklangan muqova. */
+.book-seam {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 9%;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    rgb(0 0 0 / 0.3) 0%,
+    rgb(0 0 0 / 0.1) 38%,
+    rgb(255 255 255 / 0.16) 52%,
+    rgb(0 0 0 / 0.05) 72%,
+    rgb(0 0 0 / 0) 100%
+  );
+}
+
+/* Yon yuzalar: o'ngda varaqlar, chapda tikuv. Ikkalasi ham ekranga tik
+   turadi, shuning uchun tinch holatda ko'rinmaydi — faqat burilganda. */
+.book-edge,
+.book-spine {
+  position: absolute;
+  top: 1.2%;
+  bottom: 1.2%;
+  width: var(--book-depth);
+}
+
+.book-edge {
+  right: 0;
+  transform-origin: right center;
+  transform: rotateY(-90deg);
+  background:
+    repeating-linear-gradient(
+      to right,
+      rgb(90 78 60 / 0.16) 0 1px,
+      transparent 1px 3px
+    ),
+    linear-gradient(to right, #e7e0d4, #fbf8f2 46%, #d8d0c1);
+}
+
+.book-spine {
+  left: 0;
+  transform-origin: left center;
+  transform: rotateY(90deg);
+  background: linear-gradient(
+    to right,
+    rgb(0 0 0 / 0.45),
+    rgb(0 0 0 / 0.22) 55%,
+    rgb(0 0 0 / 0.4)
+  );
+}
+
+/* Yerdagi soya — kitob bilan birga burilmasligi uchun blokdan tashqarida. */
+.book-shadow {
+  position: absolute;
+  right: 7%;
+  bottom: -0.7rem;
+  left: 7%;
+  height: 0.9rem;
+  border-radius: 50%;
+  background: rgb(0 0 0 / 0.28);
+  filter: blur(9px);
+  opacity: 0.5;
+  transition:
+    opacity 760ms var(--ease-out-quint),
+    transform 760ms var(--ease-out-quint);
+}
+
+.book-card:hover .book-shadow,
+.book-card:focus-within .book-shadow {
+  opacity: 0.75;
+  transform: translateY(2px) scaleX(1.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .book-card:hover .book-block,
+  .book-card:focus-within .book-block,
+  .book-card:hover .book-shadow,
+  .book-card:focus-within .book-shadow {
+    transform: none;
+  }
+}

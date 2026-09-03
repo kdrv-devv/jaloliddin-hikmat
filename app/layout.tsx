@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Alegreya, Alegreya_Sans } from "next/font/google";
-import { site } from "@/lib/site";
+import { envValue } from "@/lib/env";
+import { absoluteUrl, site } from "@/lib/site";
 import "./globals.css";
 
 const serif = Alegreya({
@@ -17,10 +18,36 @@ const sans = Alegreya_Sans({
   display: "swap",
 });
 
+/** Search Console / Yandex Webmaster tasdiqlash kodlari (ixtiyoriy). */
+const verification = {
+  ...(envValue(process.env.GOOGLE_SITE_VERIFICATION)
+    ? { google: envValue(process.env.GOOGLE_SITE_VERIFICATION) }
+    : {}),
+  ...(envValue(process.env.YANDEX_VERIFICATION)
+    ? { yandex: envValue(process.env.YANDEX_VERIFICATION) }
+    : {}),
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: { default: site.title, template: `%s — ${site.name}` },
   description: site.description,
+  applicationName: site.name,
+  authors: [{ name: site.name, url: absoluteUrl("/haqida") }],
+  creator: site.name,
+  publisher: site.name,
+  keywords: [
+    "Jaloliddin",
+    "blog",
+    "o‘zbekcha blog",
+    "kundalik",
+    "esse",
+    "kitoblar",
+    "o‘qilgan kitoblar",
+  ],
+  category: "blog",
+  manifest: "/manifest.webmanifest",
+  formatDetection: { telephone: false, address: false, email: false },
   openGraph: {
     type: "website",
     locale: site.locale,
@@ -29,12 +56,29 @@ export const metadata: Metadata = {
     description: site.description,
     url: site.url,
   },
-  twitter: { card: "summary_large_image" },
+  twitter: {
+    card: "summary_large_image",
+    title: site.title,
+    description: site.description,
+  },
   alternates: {
     canonical: "/",
-    types: { "application/rss+xml": `${site.url}/rss.xml` },
+    types: { "application/rss+xml": absoluteUrl("/rss.xml") },
   },
-  robots: { index: true, follow: true },
+  // `max-image-preview: large` — Google natijalarda va Discover'da katta
+  // rasm ko'rsatishi uchun; usiz preview kichkina belgi bo'lib qoladi.
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  ...(Object.keys(verification).length > 0 ? { verification } : {}),
 };
 
 export const viewport: Viewport = {
