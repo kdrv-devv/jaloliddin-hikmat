@@ -19,7 +19,7 @@ export default async function AdminHomePage() {
     error =
       caught instanceof Error
         ? caught.message
-        : "Bazaga ulanib bo’lmadi.";
+        : "Bazaga ulanib bo'lmadi.";
   }
 
   const views = posts.reduce((total, post) => total + post.views, 0);
@@ -33,8 +33,8 @@ export default async function AdminHomePage() {
           </h1>
           <p className="mt-1 text-[0.9375rem] text-muted">
             {posts.length > 0
-              ? `Nashrdagi yozuvlar jami ${formatCount(views)} marta o’qilgan.`
-              : "Yangi yozuv qo’shing yoki mavjudini tahrirlang."}
+              ? `Nashrdagi yozuvlar jami ${formatCount(views)} marta o'qilgan.`
+              : "Yangi yozuv qo'shing yoki mavjudini tahrirlang."}
           </p>
         </div>
         <Link
@@ -52,14 +52,14 @@ export default async function AdminHomePage() {
             role="alert"
             className="rounded-xl border border-danger/35 bg-danger-soft px-5 py-5"
           >
-            <h2 className="font-medium text-danger">Bazaga ulanib bo’lmadi</h2>
+            <h2 className="font-medium text-danger">Bazaga ulanib bo'lmadi</h2>
             <p className="mt-1.5 text-[0.9375rem] leading-relaxed text-danger/90">
               {error}
             </p>
             <p className="mt-3 text-[0.875rem] text-danger/80">
               <code className="font-mono">.env.local</code> faylidagi{" "}
-              <code className="font-mono">MONGODB_URI</code> ni va Atlas’dagi
-              Network Access ro’yxatini tekshiring.
+              <code className="font-mono">MONGODB_URI</code> ni va Atlas'dagi
+              Network Access ro'yxatini tekshiring.
             </p>
           </div>
         ) : (

@@ -21,7 +21,7 @@ export default function SiteError({
         Nimadir kutilmaganda uzildi
       </h1>
       <p className="mt-3 max-w-[46ch] text-[1rem] leading-relaxed text-muted">
-        Sahifani yuklab bo’lmadi. Bir marta qayta urinib ko’ring — odatda
+        Sahifani yuklab bo'lmadi. Bir marta qayta urinib ko'ring — odatda
         shu yetadi.
       </p>
       <button

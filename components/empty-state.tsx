@@ -46,14 +46,14 @@ export function SetupNotice() {
         <code className="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[0.85em]">
           MONGODB_URI
         </code>{" "}
-        ni ko’rsating va serverni qayta ishga tushiring. Keyin{" "}
+        ni ko'rsating va serverni qayta ishga tushiring. Keyin{" "}
         <code className="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[0.85em]">
           /admin
         </code>{" "}
         orqali birinchi yozuvingizni kiritishingiz mumkin.
       </p>
       <p className="mt-3 text-[0.875rem] text-muted">
-        To’liq qadamlar loyihadagi <strong className="font-medium">README.md</strong>{" "}
+        To'liq qadamlar loyihadagi <strong className="font-medium">README.md</strong>{" "}
         faylida.
       </p>
     </div>

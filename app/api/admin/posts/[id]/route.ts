@@ -9,7 +9,7 @@ export async function GET(
   context: RouteContext<"/api/admin/posts/[id]">,
 ) {
   if (!(await getSession())) {
-    return NextResponse.json({ error: "Ruxsat yo’q." }, { status: 401 });
+    return NextResponse.json({ error: "Ruxsat yo'q." }, { status: 401 });
   }
   const { id } = await context.params;
   const post = await getPostById(id);
@@ -24,7 +24,7 @@ export async function PUT(
   context: RouteContext<"/api/admin/posts/[id]">,
 ) {
   if (!(await getSession())) {
-    return NextResponse.json({ error: "Ruxsat yo’q." }, { status: 401 });
+    return NextResponse.json({ error: "Ruxsat yo'q." }, { status: 401 });
   }
   const { id } = await context.params;
 
@@ -32,7 +32,7 @@ export async function PUT(
   try {
     raw = await request.json();
   } catch {
-    return NextResponse.json({ error: "Ma’lumot noto’g’ri." }, { status: 400 });
+    return NextResponse.json({ error: "Ma'lumot noto'g'ri." }, { status: 400 });
   }
 
   const parsed = validatePostInput(raw);
@@ -79,7 +79,7 @@ export async function DELETE(
   context: RouteContext<"/api/admin/posts/[id]">,
 ) {
   if (!(await getSession())) {
-    return NextResponse.json({ error: "Ruxsat yo’q." }, { status: 401 });
+    return NextResponse.json({ error: "Ruxsat yo'q." }, { status: 401 });
   }
   const { id } = await context.params;
 
@@ -94,7 +94,7 @@ export async function DELETE(
   } catch (error) {
     console.error("[posts:delete]", error);
     return NextResponse.json(
-      { error: "O’chirishda xatolik yuz berdi." },
+      { error: "O'chirishda xatolik yuz berdi." },
       { status: 500 },
     );
   }

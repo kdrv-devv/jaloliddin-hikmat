@@ -86,20 +86,20 @@ export function PageEditor({
       if (!response.ok) {
         setFieldError({
           field: data.field,
-          message: data.error ?? "Saqlab bo’lmadi.",
+          message: data.error ?? "Saqlab bo'lmadi.",
         });
         setPane("write");
-        toast(data.error ?? "Saqlab bo’lmadi.", "error");
+        toast(data.error ?? "Saqlab bo'lmadi.", "error");
         return;
       }
 
       const saved = (data.values ?? draft) as PageValues;
       setBaseline(saved);
       setDraft(saved);
-      toast("Saqlandi va saytda ko’rinmoqda.");
+      toast("Saqlandi va saytda ko'rinmoqda.");
       router.refresh();
     } catch {
-      toast("Server bilan bog’lanib bo’lmadi.", "error");
+      toast("Server bilan bog'lanib bo'lmadi.", "error");
     } finally {
       setSaving(false);
     }
@@ -124,7 +124,7 @@ export function PageEditor({
         <div className="mx-auto flex h-14 max-w-[76rem] items-center gap-2 px-4 sm:gap-3 sm:px-6">
           <Link
             href="/admin/sahifalar"
-            aria-label="Sahifalar ro’yxatiga qaytish"
+            aria-label="Sahifalar ro'yxatiga qaytish"
             className="grid size-9 shrink-0 place-items-center rounded-lg text-muted transition-colors duration-150 hover:bg-surface hover:text-ink"
           >
             <ArrowLeftIcon className="size-4" />
@@ -147,7 +147,7 @@ export function PageEditor({
               variant="ghost"
               onClick={() => setDraft(defaults)}
               disabled={isDefault}
-              title="Maydonlarni dastlabki matn bilan to’ldiradi. Saqlaguningizcha saytga tegmaydi."
+              title="Maydonlarni dastlabki matn bilan to'ldiradi. Saqlaguningizcha saytga tegmaydi."
             >
               Dastlabki matn
             </Button>
@@ -168,7 +168,7 @@ export function PageEditor({
           {(
             [
               { value: "write", label: "Matn" },
-              { value: "preview", label: "Ko’rinish" },
+              { value: "preview", label: "Ko'rinish" },
             ] as const
           ).map((tab) => (
             <button
@@ -239,11 +239,11 @@ export function PageEditor({
             <div className="space-y-5 border-t border-line pt-5">
               <div>
                 <h2 className="text-[0.9375rem] font-medium text-ink">
-                  Qidiruvda ko’rinishi
+                  Qidiruvda ko'rinishi
                 </h2>
                 <p className="mt-1 text-[0.8125rem] text-muted">
-                  Ikkalasini ham bo’sh qoldirsangiz, Google sahifa matnidan
-                  o’zi oladi. O’ng tomonda namunasi ko’rinib turadi.
+                  Ikkalasini ham bo'sh qoldirsangiz, Google sahifa matnidan
+                  o'zi oladi. O'ng tomonda namunasi ko'rinib turadi.
                 </p>
               </div>
               {seoFields.map((field) => (
@@ -292,7 +292,7 @@ export function PageEditor({
           ) : null}
 
           <p className="border-t border-line pt-4 text-[0.8125rem] text-muted">
-            O’zgarish saqlangan zahoti{" "}
+            O'zgarish saqlangan zahoti{" "}
             <Link
               href={definition.path}
               target="_blank"
@@ -301,7 +301,7 @@ export function PageEditor({
             >
               {definition.path}
             </Link>{" "}
-            sahifasida ko’rinadi.
+            sahifasida ko'rinadi.
           </p>
         </section>
 
@@ -353,7 +353,7 @@ function SearchPreview({
   return (
     <div className="mt-12 border-t border-line pt-6">
       <h3 className="text-[0.8125rem] font-medium text-muted">
-        Google’da taxminan shunday ko’rinadi
+        Google'da taxminan shunday ko'rinadi
       </h3>
       <div className="mt-3 rounded-xl border border-line px-4 py-4">
         <p className="text-[0.8125rem] text-ink-soft">
@@ -369,7 +369,7 @@ function SearchPreview({
       </div>
       <p className="mt-2 text-[0.8125rem] text-muted">
         Sarlavha {title.length}/60, tavsif {description.length}/160 belgi.
-        Undan uzunini Google qisqartirib ko’rsatadi.
+        Undan uzunini Google qisqartirib ko'rsatadi.
       </p>
     </div>
   );
@@ -447,7 +447,7 @@ function MarkdownPreview({ source }: { source: string }) {
 function EmptyPreview() {
   return (
     <p className="mt-4 rounded-xl border border-dashed border-line px-5 py-8 text-center text-[0.9375rem] text-muted">
-      Matn yozilgach, shu yerda saytdagidek ko’rinadi.
+      Matn yozilgach, shu yerda saytdagidek ko'rinadi.
     </p>
   );
 }

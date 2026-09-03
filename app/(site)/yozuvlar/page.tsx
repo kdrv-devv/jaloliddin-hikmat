@@ -150,7 +150,7 @@ export default async function ArchivePage(props: PageProps<"/yozuvlar">) {
             ? `Jami ${total} ta yozuv. ${
                 page > 1 ? `${page}-sahifa.` : "Eng yangisidan boshlab."
               }`
-            : "Arxiv hozircha bo’sh."}
+            : "Arxiv hozircha bo'sh."}
         </p>
       </header>
 
@@ -202,8 +202,8 @@ export default async function ArchivePage(props: PageProps<"/yozuvlar">) {
         </>
       ) : isDatabaseConfigured() ? (
         <EmptyState
-          title="Arxiv hali bo’sh"
-          body="Birinchi yozuv nashr etilgach, u shu sahifada yillar bo’yicha saqlanib boradi."
+          title="Arxiv hali bo'sh"
+          body="Birinchi yozuv nashr etilgach, u shu sahifada yillar bo'yicha saqlanib boradi."
           action={{ href: "/", label: "Bosh sahifaga" }}
         />
       ) : (

@@ -41,30 +41,30 @@ export type PageDefinition = {
 export type PageValues = Record<string, string>;
 
 const HOME_INTRO =
-  "Men Jaloliddin. Bu yerda kundalik kuzatuvlarim, o’qigan kitoblarim va " +
-  "oxirigacha o’ylab ko’rilgan fikrlarim yig’ilib boradi — shoshilmasdan, " +
+  "Men Jaloliddin. Bu yerda kundalik kuzatuvlarim, o'qigan kitoblarim va " +
+  "oxirigacha o'ylab ko'rilgan fikrlarim yig'ilib boradi — shoshilmasdan, " +
   "birma-bir.";
 
-const ABOUT_BODY = `Bu sahifa — uzun tanishtiruv emas, qisqa qo’l berish. Men shu yerda o’zim uchun yozaman: kunduzi ko’rgan bir narsa, kechqurun o’qigan bir sahifa, uzoq vaqt yechilmay turgan bir savol.
+const ABOUT_BODY = `Bu sahifa — uzun tanishtiruv emas, qisqa qo'l berish. Men shu yerda o'zim uchun yozaman: kunduzi ko'rgan bir narsa, kechqurun o'qigan bir sahifa, uzoq vaqt yechilmay turgan bir savol.
 
-Yozganlarim ko’pincha shoshilmasdan tugaydi. Bir matnni bir necha kun tashlab qo’yib, keyin qaytib o’qiyman — shundagina qaysi jumla rost, qaysi biri shunchaki chiroyli ekani ko’rinadi. Shuning uchun bu yerda ko’p emas, ammo o’zim ishonadigan narsalar turadi.
+Yozganlarim ko'pincha shoshilmasdan tugaydi. Bir matnni bir necha kun tashlab qo'yib, keyin qaytib o'qiyman — shundagina qaysi jumla rost, qaysi biri shunchaki chiroyli ekani ko'rinadi. Shuning uchun bu yerda ko'p emas, ammo o'zim ishonadigan narsalar turadi.
 
 ## Nima haqida yozaman
 
-Uchta narsa aylanib-aylanib qaytadi: _kundalik kuzatuvlar_ — shahar, ob-havo, odamlar; _kitoblar_ — o’qiganim va nega esimda qolgani; va _fikrlar_ — hali javobi topilmagan, lekin yozib qo’yishga arzigan savollar.
+Uchta narsa aylanib-aylanib qaytadi: _kundalik kuzatuvlar_ — shahar, ob-havo, odamlar; _kitoblar_ — o'qiganim va nega esimda qolgani; va _fikrlar_ — hali javobi topilmagan, lekin yozib qo'yishga arzigan savollar.
 
-Matnlarim uzun bo’lishi mumkin. Ularni bir o’tirishda tugatish shart emas — sahifa qayerda to’xtaganingizni yuqoridagi ingichka chiziqda ko’rsatib turadi.
+Matnlarim uzun bo'lishi mumkin. Ularni bir o'tirishda tugatish shart emas — sahifa qayerda to'xtaganingizni yuqoridagi ingichka chiziqda ko'rsatib turadi.
 
 ## Aloqa
 
-Yozganlarim bo’yicha fikringiz bo’lsa, xursand bo’laman. Yangi matnlar shoshilmasdan, o’zi tayyor bo’lgan kuni chiqadi — kuzatib borish uchun vaqti-vaqti bilan kirib tursangiz kifoya.`;
+Yozganlarim bo'yicha fikringiz bo'lsa, xursand bo'laman. Yangi matnlar shoshilmasdan, o'zi tayyor bo'lgan kuni chiqadi — kuzatib borish uchun vaqti-vaqti bilan kirib tursangiz kifoya.`;
 
 export const PAGE_DEFINITIONS: PageDefinition[] = [
   {
     key: "bosh",
     label: "Bosh sahifa",
     path: "/",
-    summary: "Saytga kirgan odam birinchi o’qiydigan sarlavha va tanishtiruv.",
+    summary: "Saytga kirgan odam birinchi o'qiydigan sarlavha va tanishtiruv.",
     seo: { titleFallback: "Jaloliddin — yozuvlar", descriptionFrom: "intro" },
     fields: [
       {
@@ -73,7 +73,7 @@ export const PAGE_DEFINITIONS: PageDefinition[] = [
         hint: "Bir jumla — sahifaning eng yirik matni.",
         kind: "line",
         maxLength: 160,
-        fallback: "Sekin yoziladigan, sekin o’qiladigan yozuvlar.",
+        fallback: "Sekin yoziladigan, sekin o'qiladigan yozuvlar.",
       },
       {
         key: "intro",
@@ -86,7 +86,7 @@ export const PAGE_DEFINITIONS: PageDefinition[] = [
       {
         key: "seoTitle",
         label: "Qidiruv sarlavhasi (ixtiyoriy)",
-        hint: "Google natijalarida ko’rinadigan sarlavha. 60 belgigacha bo’lgani ma’qul. Bo’sh qoldirsangiz, saytning odatiy sarlavhasi ishlatiladi.",
+        hint: "Google natijalarida ko'rinadigan sarlavha. 60 belgigacha bo'lgani ma'qul. Bo'sh qoldirsangiz, saytning odatiy sarlavhasi ishlatiladi.",
         kind: "line",
         maxLength: 70,
         optional: true,
@@ -107,7 +107,7 @@ export const PAGE_DEFINITIONS: PageDefinition[] = [
     key: "haqida",
     label: "«Haqida» sahifasi",
     path: "/haqida",
-    summary: "O’zingiz va blog haqidagi to’liq matn.",
+    summary: "O'zingiz va blog haqidagi to'liq matn.",
     seo: { titleFallback: "Haqida — Jaloliddin", descriptionFrom: "body" },
     fields: [
       {
@@ -128,7 +128,7 @@ export const PAGE_DEFINITIONS: PageDefinition[] = [
       {
         key: "seoTitle",
         label: "Qidiruv sarlavhasi (ixtiyoriy)",
-        hint: "Google natijalarida ko’rinadigan sarlavha. 60 belgigacha bo’lgani ma’qul. Bo’sh qoldirsangiz, saytning odatiy sarlavhasi ishlatiladi.",
+        hint: "Google natijalarida ko'rinadigan sarlavha. 60 belgigacha bo'lgani ma'qul. Bo'sh qoldirsangiz, saytning odatiy sarlavhasi ishlatiladi.",
         kind: "line",
         maxLength: 70,
         optional: true,
@@ -180,7 +180,7 @@ export function validatePageValues(
   raw: unknown,
 ): PageValidation {
   if (typeof raw !== "object" || raw === null) {
-    return { ok: false, error: "Ma’lumot noto’g’ri yuborildi." };
+    return { ok: false, error: "Ma'lumot noto'g'ri yuborildi." };
   }
   const body = raw as Record<string, unknown>;
   const data: PageValues = {};
@@ -192,7 +192,7 @@ export function validatePageValues(
     if (!value && !field.optional) {
       return {
         ok: false,
-        error: `«${field.label}» bo’sh bo’lishi mumkin emas.`,
+        error: `«${field.label}» bo'sh bo'lishi mumkin emas.`,
         field: field.key,
       };
     }

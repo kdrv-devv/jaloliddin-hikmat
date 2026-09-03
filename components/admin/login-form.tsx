@@ -32,7 +32,7 @@ export function LoginForm() {
       router.replace(next && next.startsWith("/admin") ? next : "/admin");
       router.refresh();
     } catch {
-      setError("Server bilan bog’lanib bo’lmadi. Internetni tekshiring.");
+      setError("Server bilan bog'lanib bo'lmadi. Internetni tekshiring.");
       setPending(false);
     }
   }

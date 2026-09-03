@@ -10,13 +10,13 @@ const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 export function validatePostInput(raw: unknown): ValidationResult {
   if (typeof raw !== "object" || raw === null) {
-    return { ok: false, error: "Ma’lumot noto’g’ri yuborildi." };
+    return { ok: false, error: "Ma'lumot noto'g'ri yuborildi." };
   }
   const body = raw as Record<string, unknown>;
 
   const title = String(body.title ?? "").trim();
   if (!title) {
-    return { ok: false, error: "Sarlavha bo’sh bo’lishi mumkin emas.", field: "title" };
+    return { ok: false, error: "Sarlavha bo'sh bo'lishi mumkin emas.", field: "title" };
   }
   if (title.length > 200) {
     return { ok: false, error: "Sarlavha 200 belgidan oshmasin.", field: "title" };
@@ -24,21 +24,21 @@ export function validatePostInput(raw: unknown): ValidationResult {
 
   const content = String(body.content ?? "").trim();
   if (!content) {
-    return { ok: false, error: "Matn bo’sh bo’lishi mumkin emas.", field: "content" };
+    return { ok: false, error: "Matn bo'sh bo'lishi mumkin emas.", field: "content" };
   }
 
   const slug = slugify(String(body.slug ?? "").trim() || title);
   if (!slug) {
     return {
       ok: false,
-      error: "Manzildan (slug) lotin harflari chiqmadi — uni qo’lda kiriting.",
+      error: "Manzildan (slug) lotin harflari chiqmadi — uni qo'lda kiriting.",
       field: "slug",
     };
   }
   if (!SLUG_PATTERN.test(slug)) {
     return {
       ok: false,
-      error: "Manzilda faqat lotin harflari, raqamlar va chiziqcha bo’lishi mumkin.",
+      error: "Manzilda faqat lotin harflari, raqamlar va chiziqcha bo'lishi mumkin.",
       field: "slug",
     };
   }
@@ -69,7 +69,7 @@ export function validatePostInput(raw: unknown): ValidationResult {
   if (coverRaw && !/^https?:\/\//i.test(coverRaw)) {
     return {
       ok: false,
-      error: "Muqova rasmi to’liq havola bo’lishi kerak (https://...).",
+      error: "Muqova rasmi to'liq havola bo'lishi kerak (https://...).",
       field: "coverImage",
     };
   }
@@ -79,7 +79,7 @@ export function validatePostInput(raw: unknown): ValidationResult {
   if (publishedRaw) {
     const parsed = new Date(publishedRaw);
     if (Number.isNaN(parsed.getTime())) {
-      return { ok: false, error: "Sana noto’g’ri.", field: "publishedAt" };
+      return { ok: false, error: "Sana noto'g'ri.", field: "publishedAt" };
     }
     publishedAt = parsed.toISOString();
   }

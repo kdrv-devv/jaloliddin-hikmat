@@ -39,11 +39,11 @@ export const metadata: Metadata = {
   keywords: [
     "Jaloliddin",
     "blog",
-    "o‘zbekcha blog",
+    "o'zbekcha blog",
     "kundalik",
     "esse",
     "kitoblar",
-    "o‘qilgan kitoblar",
+    "o'qilgan kitoblar",
   ],
   category: "blog",
   manifest: "/manifest.webmanifest",

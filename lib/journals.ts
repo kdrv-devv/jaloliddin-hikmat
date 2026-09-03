@@ -33,15 +33,15 @@ export const JOURNALS: Journal[] = [
   {
     slug: "atom",
     name: "ATOM",
-    promise: "O’zgarish birdaniga bo’lmaydi — u har kuni qilgan mehnatingda yashirin.",
+    promise: "O'zgarish birdaniga bo'lmaydi — u har kuni qilgan mehnatingda yashirin.",
     description:
       "30 kunlik kundalik. Har kuniga bitta sahifa: bugun nima qildingiz, " +
-      "nima o’zgardi, ertaga qayerdan davom etasiz. Katta qarorlar emas — " +
+      "nima o'zgardi, ertaga qayerdan davom etasiz. Katta qarorlar emas — " +
       "kichik, ammo uzilmaydigan qadamlar uchun.",
     highlights: [
-      "30 kunlik tayyor yo’l — har kuniga bitta sahifa",
-      "Har kuni qilgan mehnat yozib boriladi va ko’zga ko’rinadi",
-      "Oxirida bir oylik o’zgarish bir joyda turadi",
+      "30 kunlik tayyor yo'l — har kuniga bitta sahifa",
+      "Har kuni qilgan mehnat yozib boriladi va ko'zga ko'rinadi",
+      "Oxirida bir oylik o'zgarish bir joyda turadi",
     ],
     days: 30,
     price: null,
@@ -50,15 +50,15 @@ export const JOURNALS: Journal[] = [
     slug: "ikigai",
     name: "IKIGAI",
     promise:
-      "Sizga nima yoqadi, nimada ustasiz, dunyo nimaga muhtoj — kesishgan joyi sizning yo’lingiz.",
+      "Sizga nima yoqadi, nimada ustasiz, dunyo nimaga muhtoj — kesishgan joyi sizning yo'lingiz.",
     description:
-      "O’z yo’lini izlayotganlar uchun kundalik. To’rtta savol atrofida " +
+      "O'z yo'lini izlayotganlar uchun kundalik. To'rtta savol atrofida " +
       "qurilgan: javoblarni yozib borasiz, doiralar kesishgan joyda esa " +
-      "o’zingiz ham kutmagan narsa ko’rinadi.",
+      "o'zingiz ham kutmagan narsa ko'rinadi.",
     highlights: [
-      "To’rt savol: nima yoqadi, nimada ustasiz, dunyo nimaga muhtoj, nimaga haq olasiz",
-      "Ishtiyoq · Qiziqish · Kasb · Ish — kesishgan nuqtalar bo’yicha mashqlar",
-      "Javoblaringizdan o’z ikigayingiz chiqadi",
+      "To'rt savol: nima yoqadi, nimada ustasiz, dunyo nimaga muhtoj, nimaga haq olasiz",
+      "Ishtiyoq · Qiziqish · Kasb · Ish — kesishgan nuqtalar bo'yicha mashqlar",
+      "Javoblaringizdan o'z ikigayingiz chiqadi",
     ],
     days: null,
     price: null,
@@ -86,4 +86,4 @@ export function orderMessage(journal: Journal): string {
 }
 
 export const ASK_MESSAGE =
-  "Assalomu alaykum! Kundaliklar haqida so’ramoqchi edim.";
+  "Assalomu alaykum! Kundaliklar haqida so'ramoqchi edim.";

@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
   if (!limit.ok) {
     return NextResponse.json(
       {
-        error: `Juda ko’p urinish. ${limit.retryInMinutes} daqiqadan so’ng qayta urinib ko’ring.`,
+        error: `Juda ko'p urinish. ${limit.retryInMinutes} daqiqadan so'ng qayta urinib ko'ring.`,
       },
       { status: 429 },
     );
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json({ error: "Ma’lumot noto’g’ri." }, { status: 400 });
+    return NextResponse.json({ error: "Ma'lumot noto'g'ri." }, { status: 400 });
   }
 
   const username = String(body.username ?? "").trim();
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     const valid = await verifyCredentials(username, password);
     if (!valid) {
       return NextResponse.json(
-        { error: "Foydalanuvchi nomi yoki parol noto’g’ri." },
+        { error: "Foydalanuvchi nomi yoki parol noto'g'ri." },
         { status: 401 },
       );
     }
@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         error:
-          "Server sozlamasi to’liq emas. `.env.local` faylida ADMIN_USERNAME, ADMIN_PASSWORD_HASH va AUTH_SECRET borligini tekshiring.",
+          "Server sozlamasi to'liq emas. `.env.local` faylida ADMIN_USERNAME, ADMIN_PASSWORD_HASH va AUTH_SECRET borligini tekshiring.",
       },
       { status: 500 },
     );

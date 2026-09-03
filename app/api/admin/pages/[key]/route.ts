@@ -9,7 +9,7 @@ export async function GET(
   context: RouteContext<"/api/admin/pages/[key]">,
 ) {
   if (!(await getSession())) {
-    return NextResponse.json({ error: "Ruxsat yo’q." }, { status: 401 });
+    return NextResponse.json({ error: "Ruxsat yo'q." }, { status: 401 });
   }
   const { key } = await context.params;
   const definition = getPageDefinition(key);
@@ -21,7 +21,7 @@ export async function GET(
   } catch (error) {
     console.error("[pages:read]", error);
     return NextResponse.json(
-      { error: "Bazaga ulanib bo’lmadi." },
+      { error: "Bazaga ulanib bo'lmadi." },
       { status: 503 },
     );
   }
@@ -32,7 +32,7 @@ export async function PUT(
   context: RouteContext<"/api/admin/pages/[key]">,
 ) {
   if (!(await getSession())) {
-    return NextResponse.json({ error: "Ruxsat yo’q." }, { status: 401 });
+    return NextResponse.json({ error: "Ruxsat yo'q." }, { status: 401 });
   }
   const { key } = await context.params;
   const definition = getPageDefinition(key);
@@ -44,7 +44,7 @@ export async function PUT(
   try {
     raw = await request.json();
   } catch {
-    return NextResponse.json({ error: "Ma’lumot noto’g’ri." }, { status: 400 });
+    return NextResponse.json({ error: "Ma'lumot noto'g'ri." }, { status: 400 });
   }
 
   const parsed = validatePageValues(definition, raw);

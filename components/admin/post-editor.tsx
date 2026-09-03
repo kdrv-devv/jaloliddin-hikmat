@@ -53,7 +53,7 @@ const TOOLBAR = [
   { key: "italic", label: "I", title: "Qiya", before: "_", after: "_" },
   { key: "h2", label: "H2", title: "Sarlavha", before: "\n## ", after: "" },
   { key: "quote", label: "”", title: "Iqtibos", before: "\n> ", after: "" },
-  { key: "list", label: "—", title: "Ro’yxat", before: "\n- ", after: "" },
+  { key: "list", label: "—", title: "Ro'yxat", before: "\n- ", after: "" },
   { key: "link", label: "", title: "Havola", before: "[", after: "](https://)" },
 ] as const;
 
@@ -148,12 +148,12 @@ export function PostEditor({ post }: { post?: Post }) {
       if (!response.ok) {
         setFieldError({
           field: data.field,
-          message: data.error ?? "Saqlab bo’lmadi.",
+          message: data.error ?? "Saqlab bo'lmadi.",
         });
         if (data.field === "slug" || data.field === "coverImage") {
           setPane("settings");
         }
-        toast(data.error ?? "Saqlab bo’lmadi.", "error");
+        toast(data.error ?? "Saqlab bo'lmadi.", "error");
         return;
       }
 
@@ -164,7 +164,7 @@ export function PostEditor({ post }: { post?: Post }) {
       setSlugTouched(true);
       toast(
         saved.status === "published"
-          ? "Saqlandi va saytda ko’rinmoqda."
+          ? "Saqlandi va saytda ko'rinmoqda."
           : "Qoralama saqlandi.",
       );
       if (isNew) {
@@ -172,7 +172,7 @@ export function PostEditor({ post }: { post?: Post }) {
       }
       router.refresh();
     } catch {
-      toast("Server bilan bog’lanib bo’lmadi.", "error");
+      toast("Server bilan bog'lanib bo'lmadi.", "error");
     } finally {
       setSaving(false);
     }
@@ -244,7 +244,7 @@ export function PostEditor({ post }: { post?: Post }) {
         <div className="mx-auto flex h-14 max-w-[76rem] items-center gap-2 px-4 sm:gap-3 sm:px-6">
           <Link
             href="/admin"
-            aria-label="Ro’yxatga qaytish"
+            aria-label="Ro'yxatga qaytish"
             className="grid size-9 shrink-0 place-items-center rounded-lg text-muted transition-colors duration-150 hover:bg-surface hover:text-ink"
           >
             <ArrowLeftIcon className="size-4" />
@@ -302,7 +302,7 @@ export function PostEditor({ post }: { post?: Post }) {
           {(
             [
               { value: "write", label: "Matn", lgHidden: true },
-              { value: "preview", label: "Ko’rinish", lgHidden: false },
+              { value: "preview", label: "Ko'rinish", lgHidden: false },
               { value: "settings", label: "Sozlamalar", lgHidden: false },
             ] as const
           ).map((tab) => (
@@ -361,7 +361,7 @@ export function PostEditor({ post }: { post?: Post }) {
               </button>
             ))}
             <span className="ml-auto pr-1 text-[0.75rem] text-muted tabular-nums">
-              {words} so’z · {readingMinutes(draft.content)} daq.
+              {words} so'z · {readingMinutes(draft.content)} daq.
             </span>
           </div>
 
@@ -384,7 +384,7 @@ export function PostEditor({ post }: { post?: Post }) {
         >
           {draft.content.trim() === "" ? (
             <p className="rounded-xl border border-dashed border-line px-5 py-12 text-center text-[0.9375rem] text-muted">
-              Matn yozilgach, shu yerda saytdagidek ko’rinadi.
+              Matn yozilgach, shu yerda saytdagidek ko'rinadi.
             </p>
           ) : (
             <article
@@ -425,7 +425,7 @@ export function PostEditor({ post }: { post?: Post }) {
 
           <Field
             label="Qisqa tavsif"
-            hint={`Ro’yxatlarda va qidiruvda ko’rinadi. ${draft.excerpt.length}/300 belgi. Bo’sh qoldirsangiz, matndan olinadi.`}
+            hint={`Ro'yxatlarda va qidiruvda ko'rinadi. ${draft.excerpt.length}/300 belgi. Bo'sh qoldirsangiz, matndan olinadi.`}
           >
             {({ id, describedBy }) => (
               <Textarea
@@ -440,7 +440,7 @@ export function PostEditor({ post }: { post?: Post }) {
             )}
           </Field>
 
-          <Field label="Teglar" hint="Vergul bilan ajrating. Ko’pi bilan 6 ta.">
+          <Field label="Teglar" hint="Vergul bilan ajrating. Ko'pi bilan 6 ta.">
             {({ id, describedBy }) => (
               <>
                 <Input
@@ -468,7 +468,7 @@ export function PostEditor({ post }: { post?: Post }) {
 
           <Field
             label="Muqova rasmi (ixtiyoriy)"
-            hint="To’liq havola: https://…"
+            hint="To'liq havola: https://…"
             error={
               fieldError?.field === "coverImage" ? fieldError.message : undefined
             }
@@ -487,14 +487,14 @@ export function PostEditor({ post }: { post?: Post }) {
           </Field>
 
           {draft.coverImage ? (
-            <Field label="Rasm tavsifi" hint="Ko’rmaydigan o’quvchilar uchun.">
+            <Field label="Rasm tavsifi" hint="Ko'rmaydigan o'quvchilar uchun.">
               {({ id, describedBy }) => (
                 <Input
                   id={id}
                   aria-describedby={describedBy}
                   value={draft.coverAlt}
                   onChange={(event) => set("coverAlt", event.target.value)}
-                  placeholder="Tumanli tog’ yonbag’ridagi archalar"
+                  placeholder="Tumanli tog' yonbag'ridagi archalar"
                 />
               )}
             </Field>
@@ -502,7 +502,7 @@ export function PostEditor({ post }: { post?: Post }) {
 
           <Field
             label="Nashr sanasi"
-            hint="Bo’sh qoldirilsa, birinchi marta nashr qilingan payt qo’yiladi."
+            hint="Bo'sh qoldirilsa, birinchi marta nashr qilingan payt qo'yiladi."
             error={
               fieldError?.field === "publishedAt" ? fieldError.message : undefined
             }
@@ -524,7 +524,7 @@ export function PostEditor({ post }: { post?: Post }) {
               <dd className="text-ink-soft">{formatDate(post.createdAt)}</dd>
               <dt className="text-muted">Oxirgi tahrir</dt>
               <dd className="text-ink-soft">{formatDate(post.updatedAt)}</dd>
-              <dt className="text-muted">O’qilgan</dt>
+              <dt className="text-muted">O'qilgan</dt>
               <dd className="text-ink-soft tabular-nums">
                 {viewsLabel(post.views)}
               </dd>

@@ -6,14 +6,14 @@ import { validatePostInput } from "@/lib/validate";
 
 export async function GET() {
   if (!(await getSession())) {
-    return NextResponse.json({ error: "Ruxsat yo’q." }, { status: 401 });
+    return NextResponse.json({ error: "Ruxsat yo'q." }, { status: 401 });
   }
   try {
     return NextResponse.json({ posts: await listAllPosts() });
   } catch (error) {
     console.error("[posts:list]", error);
     return NextResponse.json(
-      { error: "Bazaga ulanib bo’lmadi." },
+      { error: "Bazaga ulanib bo'lmadi." },
       { status: 503 },
     );
   }
@@ -21,14 +21,14 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   if (!(await getSession())) {
-    return NextResponse.json({ error: "Ruxsat yo’q." }, { status: 401 });
+    return NextResponse.json({ error: "Ruxsat yo'q." }, { status: 401 });
   }
 
   let raw: unknown;
   try {
     raw = await request.json();
   } catch {
-    return NextResponse.json({ error: "Ma’lumot noto’g’ri." }, { status: 400 });
+    return NextResponse.json({ error: "Ma'lumot noto'g'ri." }, { status: 400 });
   }
 
   const parsed = validatePostInput(raw);

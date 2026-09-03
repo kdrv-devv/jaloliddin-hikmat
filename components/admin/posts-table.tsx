@@ -46,14 +46,14 @@ export function PostsTable({ posts: initial }: { posts: Post[] }) {
       });
       if (!response.ok) {
         const data = await response.json().catch(() => ({}));
-        toast(data.error ?? "O’chirib bo’lmadi.", "error");
+        toast(data.error ?? "O'chirib bo'lmadi.", "error");
         return;
       }
       setPosts((current) => current.filter((item) => item.id !== post.id));
-      toast(`«${post.title}» o’chirildi.`);
+      toast(`«${post.title}» o'chirildi.`);
       router.refresh();
     } catch {
-      toast("Server bilan bog’lanib bo’lmadi.", "error");
+      toast("Server bilan bog'lanib bo'lmadi.", "error");
     } finally {
       setDeleting(null);
       setConfirming(null);
@@ -74,7 +74,7 @@ export function PostsTable({ posts: initial }: { posts: Post[] }) {
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div
           role="tablist"
-          aria-label="Holat bo’yicha saralash"
+          aria-label="Holat bo'yicha saralash"
           className="flex items-center gap-1 rounded-lg border border-line p-1"
         >
           {FILTERS.map((item) => (
@@ -104,7 +104,7 @@ export function PostsTable({ posts: initial }: { posts: Post[] }) {
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Sarlavha yoki teg bo’yicha"
+            placeholder="Sarlavha yoki teg bo'yicha"
             aria-label="Yozuvlarni izlash"
             className="pl-9"
           />
@@ -114,7 +114,7 @@ export function PostsTable({ posts: initial }: { posts: Post[] }) {
       {visible.length === 0 ? (
         <p className="mt-10 rounded-xl border border-dashed border-line px-5 py-10 text-center text-[0.9375rem] text-muted">
           {posts.length === 0
-            ? "Hali yozuv yo’q. Yuqoridagi «Yangi yozuv» tugmasidan boshlang."
+            ? "Hali yozuv yo'q. Yuqoridagi «Yangi yozuv» tugmasidan boshlang."
             : "Bu shartga mos yozuv topilmadi."}
         </p>
       ) : (
@@ -158,7 +158,7 @@ export function PostsTable({ posts: initial }: { posts: Post[] }) {
                 {confirming === post.id ? (
                   <div className="flex shrink-0 items-center gap-2">
                     <span className="text-[0.8125rem] text-muted">
-                      O’chirilsinmi?
+                      O'chirilsinmi?
                     </span>
                     <Button
                       variant="danger"
@@ -183,8 +183,8 @@ export function PostsTable({ posts: initial }: { posts: Post[] }) {
                         href={`/${post.slug}`}
                         target="_blank"
                         rel="noreferrer"
-                        title="Saytda ko’rish"
-                        aria-label={`«${post.title}» — saytda ko’rish`}
+                        title="Saytda ko'rish"
+                        aria-label={`«${post.title}» — saytda ko'rish`}
                         className="grid size-9 place-items-center rounded-lg text-muted transition-colors duration-150 hover:bg-surface hover:text-ink"
                       >
                         <EyeIcon className="size-4" />
@@ -201,8 +201,8 @@ export function PostsTable({ posts: initial }: { posts: Post[] }) {
                     <button
                       type="button"
                       onClick={() => setConfirming(post.id)}
-                      title="O’chirish"
-                      aria-label={`«${post.title}» — o’chirish`}
+                      title="O'chirish"
+                      aria-label={`«${post.title}» — o'chirish`}
                       className="grid size-9 place-items-center rounded-lg text-muted transition-colors duration-150 hover:bg-danger-soft hover:text-danger"
                     >
                       <TrashIcon className="size-4" />

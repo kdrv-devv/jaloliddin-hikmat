@@ -132,7 +132,7 @@ export default async function HomePage(props: PageProps<"/">) {
             id="latest"
             className="mt-4 font-serif text-[1.9rem] leading-[1.12] font-medium tracking-[-0.02em] text-ink sm:text-[2.4rem]"
           >
-            So’nggi yozuvlar
+            So'nggi yozuvlar
           </h1>
           <p className="mt-3 font-sans text-[0.9375rem] text-muted">
             {page}-sahifa · jami {total} ta yozuv
@@ -147,7 +147,7 @@ export default async function HomePage(props: PageProps<"/">) {
               id="latest"
               className="font-sans text-[0.9375rem] font-medium text-ink-soft"
             >
-              So’nggi yozuvlar
+              So'nggi yozuvlar
             </h2>
             {total > POSTS_PER_PAGE ? (
               <Link
@@ -175,7 +175,7 @@ export default async function HomePage(props: PageProps<"/">) {
         ) : configured ? (
           <EmptyState
             title="Hali birorta yozuv chiqmagan"
-            body="Birinchi matn yozilgach, shu yerda paydo bo’ladi."
+            body="Birinchi matn yozilgach, shu yerda paydo bo'ladi."
           />
         ) : (
           <div className="py-10">

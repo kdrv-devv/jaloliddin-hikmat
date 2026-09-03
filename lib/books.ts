@@ -31,7 +31,7 @@ export const BOOKS: Book[] = [
     title: "Kimdir uyiga, kimdir uyidan…",
     tagline: "Qalam alam",
     description:
-      "Ketish va qaytish haqidagi qisqa yozuvlar. Bir xil yo’lda ikki xil " +
+      "Ketish va qaytish haqidagi qisqa yozuvlar. Bir xil yo'lda ikki xil " +
       "odam — biri uyiga shoshadi, ikkinchisi uyidan.",
     pages: 63,
     size: 1_029_101,
@@ -39,35 +39,35 @@ export const BOOKS: Book[] = [
   },
   {
     slug: "olib-uygondim",
-    title: "O’lib uyg’ondim",
-    tagline: "O’lim hammani ham o’ldirmasligini angladim…",
+    title: "O'lib uyg'ondim",
+    tagline: "O'lim hammani ham o'ldirmasligini angladim…",
     description:
-      "Tugadi degan joydan qayta boshlanadigan kunlar haqida. Yo’qotish " +
-      "odamni qanday qilib o’ziga qaytarishi haqidagi matnlar.",
+      "Tugadi degan joydan qayta boshlanadigan kunlar haqida. Yo'qotish " +
+      "odamni qanday qilib o'ziga qaytarishi haqidagi matnlar.",
     pages: 31,
     size: 20_938_502,
-    downloadName: "O’lib uyg’ondim.pdf",
+    downloadName: "O'lib uyg'ondim.pdf",
   },
   {
     slug: "savollar-insonlarni-ozgartiradi",
-    title: "Savollar insonlarni o’zgartiradi",
+    title: "Savollar insonlarni o'zgartiradi",
     tagline: "Savol ilmning kalitidir",
     description:
-      "To’g’ri javob emas, to’g’ri savol o’zgartiradi. Kundalik hayotda " +
-      "o’zimizga berishdan qo’rqadigan savollar to’plami.",
+      "To'g'ri javob emas, to'g'ri savol o'zgartiradi. Kundalik hayotda " +
+      "o'zimizga berishdan qo'rqadigan savollar to'plami.",
     pages: 38,
     size: 440_278,
-    downloadName: "Savollar insonlarni o’zgartiradi.pdf",
+    downloadName: "Savollar insonlarni o'zgartiradi.pdf",
   },
   {
     slug: "umr-qisqa-ilm-kop",
-    title: "Umr qisqa, ilm ko’p",
+    title: "Umr qisqa, ilm ko'p",
     description:
-      "Vaqt va o’qish haqida. Hammasini ulgurib bo’lmasligini bilgan holda " +
-      "nimani tanlash kerakligi haqidagi o’ylar.",
+      "Vaqt va o'qish haqida. Hammasini ulgurib bo'lmasligini bilgan holda " +
+      "nimani tanlash kerakligi haqidagi o'ylar.",
     pages: 58,
     size: 917_050,
-    downloadName: "Umr qisqa, ilm ko’p.pdf",
+    downloadName: "Umr qisqa, ilm ko'p.pdf",
   },
 ];
 

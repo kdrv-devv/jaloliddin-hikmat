@@ -55,9 +55,9 @@ export function formatCount(value: number): string {
 }
 
 export function viewsLabel(count: number): string {
-  return `${formatCount(count)} ko’rish`;
+  return `${formatCount(count)} ko'rish`;
 }
 
 export function readingLabel(minutes: number): string {
-  return `${minutes} daqiqa o’qish`;
+  return `${minutes} daqiqa o'qish`;
 }

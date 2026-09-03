@@ -39,33 +39,33 @@ export const metadata: Metadata = {
 const REASONS = [
   {
     Icon: PencilIcon,
-    title: "Bosh ichidagi tartibsizlik qog’ozda tartibga tushadi",
-    body: "Aylanaverib charchatgan fikr yozilgan zahoti kichrayadi. Nima muhimligi shundagina ko’rinadi.",
+    title: "Bosh ichidagi tartibsizlik qog'ozda tartibga tushadi",
+    body: "Aylanaverib charchatgan fikr yozilgan zahoti kichrayadi. Nima muhimligi shundagina ko'rinadi.",
   },
   {
     Icon: CheckIcon,
-    title: "Bo’sh varaq oldida qotib qolmaysiz",
-    body: "Savollar tayyor. Siz «nima yozsam ekan» deb emas, to’g’ridan-to’g’ri javob yozib boshlaysiz.",
+    title: "Bo'sh varaq oldida qotib qolmaysiz",
+    body: "Savollar tayyor. Siz «nima yozsam ekan» deb emas, to'g'ridan-to'g'ri javob yozib boshlaysiz.",
   },
   {
     Icon: BookIcon,
-    title: "Kuniga o’n daqiqa — lekin uzilmasa",
-    body: "Ko’p yozish shart emas. Bir oy uzilmay yozilgan bir necha qator butun yilni o’zgartiradi.",
+    title: "Kuniga o'n daqiqa — lekin uzilmasa",
+    body: "Ko'p yozish shart emas. Bir oy uzilmay yozilgan bir necha qator butun yilni o'zgartiradi.",
   },
 ];
 
 const STEPS = [
   {
     title: "Kundalikni tanlang",
-    body: "Odat qurmoqchi bo’lsangiz — ATOM. O’z yo’lingizni izlayotgan bo’lsangiz — IKIGAI.",
+    body: "Odat qurmoqchi bo'lsangiz — ATOM. O'z yo'lingizni izlayotgan bo'lsangiz — IKIGAI.",
   },
   {
     title: "Tugmani bosing",
-    body: "Telegram ochiladi, xabar tayyor holda yozilgan bo’ladi. Faqat yuborasiz.",
+    body: "Telegram ochiladi, xabar tayyor holda yozilgan bo'ladi. Faqat yuborasiz.",
   },
   {
     title: "Yetkazib berishni kelishamiz",
-    body: "To’lov va yetkazib berish shartlarini yozishmada birgalikda hal qilamiz.",
+    body: "To'lov va yetkazib berish shartlarini yozishmada birgalikda hal qilamiz.",
   },
 ];
 
@@ -100,10 +100,10 @@ export default function JournalsPage() {
             Kundaliklar
           </p>
           <h1 className="mt-3 font-serif text-[2.15rem] leading-[1.08] font-medium tracking-[-0.025em] text-balance text-ink sm:text-[3.1rem] sm:leading-[1.04]">
-            Yozib boradigan odam o’zgaradi.
+            Yozib boradigan odam o'zgaradi.
           </h1>
           <p className="mt-5 max-w-[46ch] text-[1.0625rem] leading-[1.6] text-ink-soft sm:text-[1.125rem]">
-            Ikkita kundalik: biri odat qurish uchun, biri o’z yo’lini topish
+            Ikkita kundalik: biri odat qurish uchun, biri o'z yo'lini topish
             uchun. Ikkalasida ham savollar tayyor — sizdan faqat rostini
             yozish talab qilinadi.
           </p>
@@ -113,7 +113,7 @@ export default function JournalsPage() {
               href="#kundaliklar"
               className="rounded-full bg-primary px-5 py-2.5 font-sans text-[0.9375rem] font-medium text-primary-on transition-colors duration-200 hover:bg-primary-hover"
             >
-              Kundaliklarni ko’rish
+              Kundaliklarni ko'rish
             </a>
             <a
               href={askHref}
@@ -161,8 +161,8 @@ export default function JournalsPage() {
           Ikkita kundalik, ikki xil savol
         </h2>
         <p className="mt-3 max-w-[52ch] text-[1rem] leading-relaxed text-muted">
-          Qaysi biri kerakligini bilmasangiz, o’zingizdan so’rang: men odat
-          qurmoqchimanmi yoki yo’nalish izlayapmanmi?
+          Qaysi biri kerakligini bilmasangiz, o'zingizdan so'rang: men odat
+          qurmoqchimanmi yoki yo'nalish izlayapmanmi?
         </p>
 
         <div className="mt-8 grid gap-6 sm:mt-10 sm:grid-cols-2">
@@ -202,11 +202,11 @@ export default function JournalsPage() {
       <section className="pt-16 sm:pt-24">
         <div className="relative overflow-hidden rounded-2xl border border-line bg-surface px-6 py-10 text-center sm:px-10 sm:py-14">
           <h2 className="font-serif text-[1.6rem] leading-[1.15] font-medium tracking-[-0.02em] text-balance text-ink sm:text-[2.05rem]">
-            Birinchi sahifa eng qiyini. Qolgani o’zi ketadi.
+            Birinchi sahifa eng qiyini. Qolgani o'zi ketadi.
           </h2>
           <p className="mx-auto mt-4 max-w-[44ch] text-[1rem] leading-relaxed text-muted">
             Kundalikni ertaga emas, bugun boshlagan odam bir oydan keyin
-            o’zining qanday o’zgarganini o’qib ko’radi.
+            o'zining qanday o'zgarganini o'qib ko'radi.
           </p>
           <a
             href={askHref}
@@ -218,7 +218,7 @@ export default function JournalsPage() {
             Telegramda buyurtma berish
           </a>
           <p className="mt-4 font-sans text-[0.8125rem] text-muted">
-            @{"hr_Jaloliddin"} — savollarga o’zim javob beraman.
+            @{"hr_Jaloliddin"} — savollarga o'zim javob beraman.
           </p>
         </div>
       </section>

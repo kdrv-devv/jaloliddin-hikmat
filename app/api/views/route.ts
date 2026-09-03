@@ -9,7 +9,7 @@ import {
 import { DEVICE_ID_PATTERN } from "@/lib/device";
 import { SESSION_COOKIE, verifySession } from "@/lib/session";
 
-/** Bir IP’dan bir soatda ko'pi bilan shuncha yangi ko'rish qayd etiladi. */
+/** Bir IP'dan bir soatda ko'pi bilan shuncha yangi ko'rish qayd etiladi. */
 const MAX_PER_HOUR = 120;
 const WINDOW_MS = 60 * 60 * 1000;
 const hits = new Map<string, { count: number; resetAt: number }>();
@@ -42,13 +42,13 @@ export async function POST(request: NextRequest) {
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json({ error: "Ma’lumot noto’g’ri." }, { status: 400 });
+    return NextResponse.json({ error: "Ma'lumot noto'g'ri." }, { status: 400 });
   }
 
   const postId = String(body.postId ?? "");
   const deviceId = String(body.deviceId ?? "");
   if (!ObjectId.isValid(postId) || !DEVICE_ID_PATTERN.test(deviceId)) {
-    return NextResponse.json({ error: "Ma’lumot noto’g’ri." }, { status: 400 });
+    return NextResponse.json({ error: "Ma'lumot noto'g'ri." }, { status: 400 });
   }
 
   const ip =

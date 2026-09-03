@@ -100,7 +100,7 @@ export default async function TagPage(props: PageProps<"/teg/[tag]">) {
         <p className="mt-3 text-[1rem] text-muted">
           {posts.length > 0
             ? `${posts.length} ta yozuv topildi.`
-            : "Bu teg bo’yicha hozircha yozuv yo’q."}
+            : "Bu teg bo'yicha hozircha yozuv yo'q."}
         </p>
       </header>
 
@@ -109,9 +109,9 @@ export default async function TagPage(props: PageProps<"/teg/[tag]">) {
           <PostList posts={posts} />
         ) : (
           <EmptyState
-            title="Bu teg bo’sh"
-            body="Ehtimol yozuv o’chirilgan yoki teg nomi o’zgargan. Arxivdan boshqa teglarni ko’rib chiqing."
-            action={{ href: "/yozuvlar", label: "Arxivga o’tish" }}
+            title="Bu teg bo'sh"
+            body="Ehtimol yozuv o'chirilgan yoki teg nomi o'zgargan. Arxivdan boshqa teglarni ko'rib chiqing."
+            action={{ href: "/yozuvlar", label: "Arxivga o'tish" }}
           />
         )}
       </div>

@@ -99,7 +99,7 @@ export function JournalCard({ journal }: { journal: Journal }) {
 
           <p className="mt-3 text-[0.8125rem] leading-relaxed text-muted">
             Tugmani bossangiz, Telegram ochiladi va xabar allaqachon yozilgan
-            bo’ladi — faqat yuborasiz.
+            bo'ladi — faqat yuborasiz.
           </p>
         </div>
       </div>

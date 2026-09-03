@@ -21,7 +21,7 @@ export default function AdminError({
       >
         <h1 className="font-medium text-danger">Boshqaruvda xatolik</h1>
         <p className="mt-1.5 text-[0.9375rem] leading-relaxed text-danger/90">
-          {error.message || "Noma’lum xatolik yuz berdi."}
+          {error.message || "Noma'lum xatolik yuz berdi."}
         </p>
         <button
           type="button"
