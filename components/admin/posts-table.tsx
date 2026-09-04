@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { EyeIcon, PencilIcon, SearchIcon, TrashIcon } from "@/components/icons";
-import { formatDate, viewsLabel } from "@/lib/format";
+import { formatDate, likesLabel, viewsLabel } from "@/lib/format";
 import { getSection, type SectionKey } from "@/lib/sections";
 import type { Post } from "@/lib/types";
 import { Button, Input, SectionBadge, StatusBadge, useToast } from "./ui";
@@ -161,6 +161,14 @@ export function PostsTable({
                         <span className="tabular-nums">
                           {viewsLabel(post.views)}
                         </span>
+                        {post.likes > 0 ? (
+                          <>
+                            <span aria-hidden className="mx-1.5">·</span>
+                            <span className="tabular-nums">
+                              {likesLabel(post.likes)}
+                            </span>
+                          </>
+                        ) : null}
                       </>
                     ) : null}
                   </p>

@@ -138,6 +138,26 @@ export const MenuIcon = (props: IconProps) => (
 );
 
 /** Telegram — to'ldirilgan belgi, shuning uchun `Icon` qolipidan tashqarida. */
+/**
+ * `filled` — yozuv yoqtirilganda yurak to'ldiriladi. Qolgan belgilardan
+ * farqli o'lganda `fill` ni o'zi belgilaydi, shuning uchun alohida turadi.
+ */
+export const HeartIcon = ({
+  filled = false,
+  ...props
+}: IconProps & { filled?: boolean }) => (
+  <Icon fill={filled ? "currentColor" : "none"} {...props}>
+    <path d="M12 20.3s-7.3-4.4-7.3-9.4a4.1 4.1 0 0 1 7.3-2.6 4.1 4.1 0 0 1 7.3 2.6c0 5-7.3 9.4-7.3 9.4Z" />
+  </Icon>
+);
+
+export const ChartIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <path d="M3.5 20.5h17" />
+    <path d="M7 20.5v-6.2M12 20.5V6.5M17 20.5v-9.6" />
+  </Icon>
+);
+
 export const TelegramIcon = (props: IconProps) => (
   <svg
     viewBox="0 0 24 24"

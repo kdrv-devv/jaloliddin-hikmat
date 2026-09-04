@@ -6,6 +6,7 @@ import {
   telegramLink,
 } from "@/lib/journals";
 import { CheckIcon, TelegramIcon } from "./icons";
+import { TrackedLink } from "./tracked-link";
 
 /**
  * Muqova — kitoblardagi bilan bir xil uch o'lchamli jism (`.book-*`),
@@ -86,15 +87,16 @@ export function JournalCard({ journal }: { journal: Journal }) {
               </p>
             )}
 
-            <a
+            <TrackedLink
               href={telegramLink(orderMessage(journal))}
               target="_blank"
               rel="noopener noreferrer"
+              event={{ type: "order", slug: journal.slug }}
               className="group inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 font-sans text-[0.9375rem] font-medium text-primary-on transition-colors duration-200 hover:bg-primary-hover"
             >
               <TelegramIcon className="size-[1.05rem] transition-transform duration-300 ease-[var(--ease-out-quint)] group-hover:translate-x-0.5" />
               Sotib olish
-            </a>
+            </TrackedLink>
           </div>
 
           <p className="mt-3 text-[0.8125rem] leading-relaxed text-muted">

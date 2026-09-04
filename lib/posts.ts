@@ -1,6 +1,8 @@
 import { ObjectId, type Filter } from "mongodb";
 import {
   ensureIndexes,
+  getEvents,
+  getLikes,
   getPosts,
   getViews,
   isDatabaseConfigured,
@@ -26,6 +28,7 @@ function serialize(doc: PostDoc): Post {
     updatedAt: doc.updatedAt.toISOString(),
     readingMinutes: readingMinutes(doc.content),
     views: doc.views ?? 0,
+    likes: doc.likes ?? 0,
   };
 }
 
@@ -217,6 +220,7 @@ export async function createPost(input: PostInput): Promise<Post> {
     createdAt: now,
     updatedAt: now,
     views: 0,
+    likes: 0,
   };
   const result = await posts.insertOne(doc as PostDoc);
   return serialize({ ...doc, _id: result.insertedId } as PostDoc);
@@ -246,11 +250,20 @@ export async function updatePost(
 
 export async function deletePost(id: string): Promise<boolean> {
   if (!ObjectId.isValid(id)) return false;
-  const [posts, views] = await Promise.all([getPosts(), getViews()]);
+  const [posts, views, likes, events] = await Promise.all([
+    getPosts(),
+    getViews(),
+    getLikes(),
+    getEvents(),
+  ]);
   const objectId = new ObjectId(id);
   const result = await posts.deleteOne({ _id: objectId });
-  // Yozuv o'chsa, uning ko'rish yozuvlari ham qolib ketmasin.
-  await views.deleteMany({ postId: objectId });
+  // Yozuv o'chsa, unga bog'liq daftarlar ham qolib ketmasin.
+  await Promise.all([
+    views.deleteMany({ postId: objectId }),
+    likes.deleteMany({ postId: objectId }),
+    events.deleteMany({ postId: objectId }),
+  ]);
   return result.deletedCount === 1;
 }
 

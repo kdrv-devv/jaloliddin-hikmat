@@ -58,6 +58,10 @@ export function viewsLabel(count: number): string {
   return `${formatCount(count)} ko'rish`;
 }
 
+export function likesLabel(count: number): string {
+  return `${formatCount(count)} yoqtirish`;
+}
+
 export function readingLabel(minutes: number): string {
   return `${minutes} daqiqa o'qish`;
 }

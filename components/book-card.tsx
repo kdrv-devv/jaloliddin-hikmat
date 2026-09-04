@@ -7,6 +7,7 @@ import {
   pagesLabel,
 } from "@/lib/books";
 import { DownloadIcon } from "./icons";
+import { TrackedLink } from "./tracked-link";
 
 /**
  * Muqova — uch o'lchamli jism.
@@ -60,14 +61,15 @@ export function BookCard({ book }: { book: Book }) {
           </p>
 
           <div className="mt-3 sm:flex sm:justify-center">
-            <a
+            <TrackedLink
               href={href}
               download={book.downloadName}
+              event={{ type: "download", slug: book.slug }}
               className="group inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 font-sans text-[0.875rem] font-medium text-primary-on transition-colors duration-200 hover:bg-primary-hover"
             >
               <DownloadIcon className="size-4 transition-transform duration-300 ease-[var(--ease-out-quint)] group-hover:translate-y-0.5" />
               Yuklab olish
-            </a>
+            </TrackedLink>
           </div>
         </div>
       </div>

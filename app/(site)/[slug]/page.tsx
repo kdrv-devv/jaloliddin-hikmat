@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ArrowLeftIcon, ArrowRightIcon, ArrowUpIcon } from "@/components/icons";
 import { JsonLd } from "@/components/json-ld";
+import { LikeButton } from "@/components/like-button";
 import { SprigDivider } from "@/components/marks";
 import { ReadingProgress } from "@/components/reading-progress";
 import { TagRow } from "@/components/tag-pill";
@@ -146,7 +147,13 @@ export default async function PostPage(props: PageProps<"/[slug]">) {
         )}
 
         <footer className="mt-14 sm:mt-20">
-          <SprigDivider />
+          {/* O'qib bo'lgach — bitta oddiy javob berish imkoni. Ro'yxatdan
+              o'tish shart emas: kim bosgani qurilma kaliti bilan aniqlanadi. */}
+          <div className="flex justify-center">
+            <LikeButton postId={post.id} initial={post.likes} />
+          </div>
+
+          <SprigDivider className="mt-12" />
 
           {tags.length > 0 ? (
             <div className="mt-10">

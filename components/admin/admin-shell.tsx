@@ -12,6 +12,7 @@ const NAV = [
   { href: "/admin", label: "Yozuvlar", exact: true },
   { href: "/admin/yangi", label: "Yangi yozuv", exact: false },
   { href: "/admin/sahifalar", label: "Sahifalar", exact: false },
+  { href: "/admin/statistika", label: "Statistika", exact: false },
 ];
 
 export function AdminShell({ children }: { children: ReactNode }) {

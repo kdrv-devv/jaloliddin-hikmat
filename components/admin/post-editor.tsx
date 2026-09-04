@@ -13,6 +13,7 @@ import {
 import { ArrowLeftIcon, LinkIcon } from "@/components/icons";
 import {
   formatDate,
+  likesLabel,
   readingMinutes,
   toDateInputValue,
   viewsLabel,
@@ -609,6 +610,10 @@ export function PostEditor({
               <dt className="text-muted">O'qilgan</dt>
               <dd className="text-ink-soft tabular-nums">
                 {viewsLabel(post.views)}
+              </dd>
+              <dt className="text-muted">Yoqtirilgan</dt>
+              <dd className="text-ink-soft tabular-nums">
+                {likesLabel(post.likes)}
               </dd>
             </dl>
           ) : null}

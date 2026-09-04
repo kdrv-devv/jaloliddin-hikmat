@@ -45,7 +45,10 @@ MONGODB_URI="mongodb+srv://user:parol@cluster0.xxxxx.mongodb.net/?retryWrites=tr
 MONGODB_DB="jaloliddin"
 ```
 
-Kolleksiya va indekslar birinchi so'rovdayoq o'zi yaratiladi.
+Kolleksiya va indekslar birinchi so'rovdayoq o'zi yaratiladi. Jami beshta:
+`posts` (yozuvlar), `pages` (sahifa matnlari), `views` (qaysi qurilma qaysi
+yozuvni o'qigani), `likes` (qaysi qurilma qaysi yozuvni yoqtirgani) va
+`events` (statistika uchun xom hodisalar — 400 kundan keyin o'zi o'chadi).
 
 ---
 
@@ -166,13 +169,24 @@ Har bir yozuv nechta odam o'qigani saqlanadi.
 - Brauzerga bir marta **qurilma kaliti** beriladi (`localStorage` va cookie —
   biri o'chsa, ikkinchisidan tiklanadi). Hech qanday IP yoki shaxsiy
   ma'lumot saqlanmaydi.
-- Bazada `(yozuv, qurilma)` juftligi bo'yicha **unique indeks** turadi, ya'ni
-  bitta qurilma bitta yozuvni necha marta ochsa ham hisob bir marta oshadi.
-  Dedupe kod darajasida emas, bazaning o'zida — bir vaqtda kelgan
+- Bazada `(yozuv, qurilma)` juftligi bo'yicha **unique indeks** turadi. Ya'ni
+  bitta qurilma **bitta** yozuvni necha marta ochsa ham hisob bir marta
+  oshadi — lekin bu faqat o'sha yozuvga tegishli. **Boshqa yozuvni o'qish
+  har doim alohida sanaladi**: juftlik yozuv bo'yicha, qurilma bo'yicha
+  emas. Dedupe kod darajasida emas, bazaning o'zida — bir vaqtda kelgan
   so'rovlar ham hisobni ikki marta oshira olmaydi.
-- Sanoq sahifa ochilishi bilan emas, **5 soniyadan keyin** yuboriladi —
-  «kirdi-chiqdi» hisobga olinmaydi.
-- Admin panelga kirgan holda o'z yozuvingizni ochsangiz, u sanalmaydi.
+- Sanoq sahifa ochilishi bilan emas, **2 soniyadan keyin** yuboriladi —
+  «kirdi-chiqdi» hisobga olinmaydi. Agar o'quvchi shundan oldin boshqa
+  yozuvga o'tib ketsa, hisob sahifa yopilayotganda `sendBeacon` orqali
+  baribir yuboriladi (kamida 0,7 soniya turgan bo'lsa). Shu sabab tez
+  varaqlash ham yo'qolmaydi.
+- Sahifadagi raqam kesh'dan emas, javobdan olinadi — ya'ni har doim joriy.
+
+Sanalmaydigan holatlar (raqam qimirlamasa, avval shularni tekshiring):
+
+- **Admin panelga kirgan holda saytni ko'rsangiz** — o'z tashrifingiz
+  hisoblanmaydi. Sinab ko'rish uchun boshqa brauzerdan yoki yashirin
+  oynadan kiring (yoki paneldan chiqing).
 - Qoralamalar sanalmaydi.
 
 Raqam yozuv sahifasida sana va o'qish vaqti yonida, admin panelda esa har bir
@@ -183,7 +197,50 @@ baribir yig'ilib boraveradi.
 
 ---
 
-## 9. Vercel'ga joylashtirish
+## 9. Yoqtirishlar
+
+Har bir yozuvning tagida «Yoqtirish» tugmasi turadi.
+
+- Ro'yxatdan o'tish shart emas: kim bosgani o'sha qurilma kaliti bilan
+  belgilanadi, ya'ni **bir qurilmadan bir marta**. Qayta bosilsa,
+  yoqtirish olib tashlanadi.
+- Bazada `likes` kolleksiyasi haqiqat manbai, `posts.likes` esa tayyor
+  hisob — sahifa har ochilganda qayta sanalmaydi.
+- Yoqtirishlar soni admin paneldagi ro'yxatda, tahrirlagichda va
+  statistika sahifasida ko'rinadi.
+
+Tugmani olib tashlash uchun `app/(site)/[slug]/page.tsx` dagi
+`<LikeButton …/>` qatorini o'chiring.
+
+---
+
+## 10. Statistika
+
+Boshqaruv panelidagi **Statistika** sahifasi (`/admin/statistika`) saytning
+qanday o'qilayotganini ko'rsatadi:
+
+- sahifa ochilishlari va noyob qurilmalar soni — jami hamda bugun;
+- kunlar bo'yicha diagramma (7 / 30 / 90 kun yoki boshidan beri);
+- eng ko'p ochilgan sahifalar;
+- eng ko'p o'qilgan yozuvlar (davr bo'yicha va boshidan beri);
+- qaysi PDF kitob necha marta yuklab olingani;
+- kundaliklarda «Sotib olish» necha marta bosilgani;
+- telefon/kompyuter ulushi va o'quvchilar qayerdan kelgani.
+
+Hodisalar `events` kolleksiyasiga yoziladi: har bir tashrif alohida hujjat,
+shuning uchun bitta ma'lumotdan ham «jami ochilish», ham «noyob qurilma»
+chiqadi. Yozilishi mumkin bo'lgan narsa — hodisa turi, sahifa manzili,
+qurilma kaliti, telefon/kompyuter va tashqi domen nomi. **IP ham, boshqa
+shaxsiy ma'lumot ham saqlanmaydi**; IP faqat serverning xotirasida, faqat
+so'rovlarni cheklash uchun ishlatiladi. Hujjatlar **400 kundan keyin o'zi
+o'chadi** (TTL indeksi).
+
+Muallif tizimga kirgan holda saytni ko'rsa, hech narsa yozilmaydi — aks
+holda statistikaning yarmi o'zingizniki bo'lib qolardi.
+
+---
+
+## 11. Vercel'ga joylashtirish
 
 1. Loyihani GitHub'ga yuklang (`.env.local` `.gitignore`da — u yuklanmaydi).
 2. <https://vercel.com/new> → repozitoriyni tanlang.
@@ -210,7 +267,7 @@ baribir yig'ilib boraveradi.
 
 ---
 
-## 10. SEO va Google Search Console
+## 12. SEO va Google Search Console
 
 ### O'z-o'zidan ishlaydigan qismi
 
@@ -274,7 +331,7 @@ O'ng tomonda Google natijasining namunasi va belgilar hisobi turadi.
 
 ---
 
-## 11. Loyiha tuzilishi
+## 13. Loyiha tuzilishi
 
 ```
 app/
@@ -286,9 +343,10 @@ app/
     haqida/          "Haqida" sahifasi (matni bazadan, paneldan tahrirlanadi)
   admin/
     login/           kirish sahifasi
-    (panel)/         ro'yxat, yangi yozuv, tahrir, sahifalar
+    (panel)/         ro'yxat, yangi yozuv, tahrir, sahifalar, statistika
   api/admin/         login, logout, posts CRUD, pages, preview
-  api/views/         ko'rishlarni qayd qilish
+  api/track/         statistika hodisalari (tashrif, o'qish, yuklab olish)
+  api/likes/         yozuvni yoqtirish va yoqtirishni olib tashlash
   rss.xml/           RSS lentasi (saytda havolasi ko'rsatilmaydi)
   opengraph-image.tsx  ijtimoiy tarmoq rasmi (yozuvlarniki [slug] ichida)
   manifest.ts apple-icon.tsx
@@ -306,6 +364,9 @@ lib/
   og.tsx             ijtimoiy tarmoq rasmining chizilishi
   site.ts            sayt manzili, canonical va OG yordamchilari
   device.ts          brauzerdagi qurilma kaliti
+  track.ts           hodisalarni serverga yuborish (brauzer tomonda)
+  analytics.ts       statistika so'rovlari (boshqaruv paneli uchun)
+  books.ts journals.ts  kitoblar va kundaliklar ro'yxati
   validate.ts        yozuv maydonlarini tekshirish
 proxy.ts             /admin/* ni himoyalaydi
 scripts/             seed va kalit yaratuvchi skriptlar
@@ -313,7 +374,7 @@ scripts/             seed va kalit yaratuvchi skriptlar
 
 ---
 
-## 12. Dizayn tizimi
+## 14. Dizayn tizimi
 
 Barcha ranglar `app/globals.css` faylining boshida OKLCH'da, ikkita to'plam
 bilan: yorug' va qorong'i rejim. Ularni o'zgartirsangiz, butun sayt
@@ -334,7 +395,7 @@ Maqola tipografiyasi `app/globals.css` dagi `.prose` sinfida: qator uzunligi
 
 ---
 
-## 13. Yodda tutish uchun
+## 15. Yodda tutish uchun
 
 - `/haqida` sahifasidagi matn hozircha kodda turibdi
   (`app/(site)/haqida/page.tsx`) — uni o'zingizga moslang.
