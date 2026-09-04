@@ -1,10 +1,16 @@
 import type { ObjectId } from "mongodb";
+import type { SectionKey } from "./sections";
 
 export type PostStatus = "draft" | "published";
 
 /** Shape stored in MongoDB. */
 export interface PostDoc {
   _id: ObjectId;
+  /**
+   * Qaysi bo'limga tegishli. Eski yozuvlarda bu maydon yo'q — ular
+   * "yozuv" deb hisoblanadi (qarang: `sectionFilter`).
+   */
+  section?: SectionKey;
   title: string;
   slug: string;
   excerpt: string;
@@ -34,6 +40,7 @@ export interface ViewDoc {
 /** Serialised shape handed to React components. */
 export interface Post {
   id: string;
+  section: SectionKey;
   title: string;
   slug: string;
   excerpt: string;
@@ -50,6 +57,7 @@ export interface Post {
 }
 
 export type PostInput = {
+  section: SectionKey;
   title: string;
   slug: string;
   excerpt: string;

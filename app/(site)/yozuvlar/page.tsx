@@ -15,6 +15,7 @@ import {
   parsePageParam,
 } from "@/lib/pagination";
 import { countPublishedPosts, listPublishedPosts, listTags } from "@/lib/posts";
+import { DEFAULT_SECTION } from "@/lib/sections";
 import {
   breadcrumbs,
   graph,
@@ -110,9 +111,13 @@ export default async function ArchivePage(props: PageProps<"/yozuvlar">) {
   if (page === null) notFound();
 
   const [posts, total, tags] = await Promise.all([
-    listPublishedPosts({ skip: pageSkip(page), limit: POSTS_PER_PAGE }),
-    countPublishedPosts(),
-    listTags(),
+    listPublishedPosts({
+      skip: pageSkip(page),
+      limit: POSTS_PER_PAGE,
+      section: DEFAULT_SECTION,
+    }),
+    countPublishedPosts(undefined, DEFAULT_SECTION),
+    listTags(DEFAULT_SECTION),
   ]);
 
   const totalPages = pageCount(total);

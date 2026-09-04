@@ -1,4 +1,5 @@
 import { plainText } from "./markdown";
+import { DEFAULT_SECTION, isSectionKey } from "./sections";
 import { isReservedSlug, slugify } from "./slug";
 import type { PostInput } from "./types";
 
@@ -52,6 +53,10 @@ export function validatePostInput(raw: unknown): ValidationResult {
 
   const status = body.status === "published" ? "published" : "draft";
 
+  // Noma'lum bo'lim kelsa — sukut bo'yicha "yozuv". Eski mijoz (bo'lim
+  // maydonini yubormaydigan) ham shu yo'l bilan ishlayveradi.
+  const section = isSectionKey(body.section) ? body.section : DEFAULT_SECTION;
+
   const excerptRaw = String(body.excerpt ?? "").trim();
   const excerpt = (excerptRaw || plainText(content, 190)).slice(0, 300);
 
@@ -87,6 +92,7 @@ export function validatePostInput(raw: unknown): ValidationResult {
   return {
     ok: true,
     data: {
+      section,
       title,
       slug,
       excerpt,

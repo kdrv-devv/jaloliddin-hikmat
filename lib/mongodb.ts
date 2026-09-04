@@ -70,6 +70,10 @@ export async function ensureIndexes(): Promise<void> {
     posts.createIndexes([
       { key: { slug: 1 }, name: "slug_unique", unique: true },
       { key: { status: 1, publishedAt: -1 }, name: "status_publishedAt" },
+      {
+        key: { section: 1, status: 1, publishedAt: -1 },
+        name: "section_status_publishedAt",
+      },
       { key: { tags: 1 }, name: "tags" },
     ]),
     // Takroriy ko'rishni bazaning o'zi rad etadi.

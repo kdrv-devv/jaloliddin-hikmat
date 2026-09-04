@@ -17,12 +17,27 @@ import {
   toDateInputValue,
   viewsLabel,
 } from "@/lib/format";
+import {
+  DEFAULT_SECTION,
+  SECTIONS,
+  getSection,
+  type SectionKey,
+} from "@/lib/sections";
 import { site } from "@/lib/site";
 import { slugify } from "@/lib/slug";
 import type { Post, PostStatus } from "@/lib/types";
-import { Button, Field, Input, Textarea, useToast, useUnsavedGuard } from "./ui";
+import {
+  Button,
+  Field,
+  Input,
+  SectionBadge,
+  Textarea,
+  useToast,
+  useUnsavedGuard,
+} from "./ui";
 
 type Draft = {
+  section: SectionKey;
   title: string;
   slug: string;
   content: string;
@@ -34,8 +49,9 @@ type Draft = {
   publishedAt: string;
 };
 
-function toDraft(post?: Post): Draft {
+function toDraft(post?: Post, section: SectionKey = DEFAULT_SECTION): Draft {
   return {
+    section: post?.section ?? section,
     title: post?.title ?? "",
     slug: post?.slug ?? "",
     content: post?.content ?? "",
@@ -68,13 +84,20 @@ const TOOLBAR_STYLE: Record<string, string> = {
 
 type Pane = "write" | "preview" | "settings";
 
-export function PostEditor({ post }: { post?: Post }) {
+export function PostEditor({
+  post,
+  /** Yangi yozuv qaysi bo'limda ochilgani — `/admin/yangi?bolim=sher`. */
+  section = DEFAULT_SECTION,
+}: {
+  post?: Post;
+  section?: SectionKey;
+}) {
   const router = useRouter();
   const toast = useToast();
   const isNew = !post;
 
-  const [baseline, setBaseline] = useState(() => toDraft(post));
-  const [draft, setDraft] = useState(() => toDraft(post));
+  const [baseline, setBaseline] = useState(() => toDraft(post, section));
+  const [draft, setDraft] = useState(() => toDraft(post, section));
   const [slugTouched, setSlugTouched] = useState(Boolean(post));
   const [pane, setPane] = useState<Pane>("write");
   const [preview, setPreview] = useState<string>("");
@@ -100,6 +123,11 @@ export function PostEditor({ post }: { post?: Post }) {
     setDraft((current) => ({ ...current, [key]: value }));
   }, []);
 
+  // Forma shakli bo'lim sozlamasidan chiqadi: teglar, markdown asboblari va
+  // «N daqiqa o'qish» — hammasi shu yerdan.
+  const config = getSection(draft.section);
+  const isVerse = config.renderAs === "verse";
+
   const effectiveSlug = slugTouched
     ? slugify(draft.slug)
     : slugify(draft.title);
@@ -122,11 +150,12 @@ export function PostEditor({ post }: { post?: Post }) {
     setFieldError(null);
     try {
       const payload = {
+        section: draft.section,
         title: draft.title,
         slug: effectiveSlug,
         content: draft.content,
         excerpt: draft.excerpt,
-        tags: tagList,
+        tags: config.useTags ? tagList : [],
         status: draft.status,
         coverImage: draft.coverImage,
         coverAlt: draft.coverAlt,
@@ -176,7 +205,7 @@ export function PostEditor({ post }: { post?: Post }) {
     } finally {
       setSaving(false);
     }
-  }, [draft, effectiveSlug, tagList, isNew, post, router, toast]);
+  }, [draft, effectiveSlug, tagList, config, isNew, post, router, toast]);
 
   /* Cmd/Ctrl + S bilan saqlash */
   useEffect(() => {
@@ -193,6 +222,8 @@ export function PostEditor({ post }: { post?: Post }) {
   /* Ko'rinish — saytdagi bilan bir xil quvur orqali */
   useEffect(() => {
     if (pane === "settings") return;
+    // She'r markdown quvuridan o'tmaydi — u to'g'ridan-to'g'ri chiziladi.
+    if (isVerse) return;
     if (deferredContent === previewFor && preview) return;
     let cancelled = false;
     const timer = setTimeout(async () => {
@@ -214,7 +245,7 @@ export function PostEditor({ post }: { post?: Post }) {
       cancelled = true;
       clearTimeout(timer);
     };
-  }, [pane, deferredContent, previewFor, preview]);
+  }, [pane, isVerse, deferredContent, previewFor, preview]);
 
   function wrap(before: string, after: string) {
     const element = textarea.current;
@@ -250,9 +281,12 @@ export function PostEditor({ post }: { post?: Post }) {
             <ArrowLeftIcon className="size-4" />
           </Link>
 
-          <p className="hidden min-w-0 flex-1 truncate text-[0.9375rem] text-muted sm:block">
-            {draft.title || (isNew ? "Yangi yozuv" : "Sarlavhasiz")}
-          </p>
+          <div className="hidden min-w-0 flex-1 items-center gap-2 sm:flex">
+            <SectionBadge section={draft.section} />
+            <p className="min-w-0 truncate text-[0.9375rem] text-muted">
+              {draft.title || "Sarlavhasiz"}
+            </p>
+          </div>
 
           <span
             className={`hidden shrink-0 text-[0.8125rem] transition-opacity duration-200 sm:block ${
@@ -344,24 +378,33 @@ export function PostEditor({ post }: { post?: Post }) {
           />
 
           <div className="mt-3 flex flex-wrap items-center gap-1 border-y border-line py-1.5">
-            {TOOLBAR.map((item) => (
-              <button
-                key={item.key}
-                type="button"
-                title={item.title}
-                aria-label={item.title}
-                onClick={() => wrap(item.before, item.after)}
-                className={`grid size-8 place-items-center rounded-md text-[0.875rem] text-muted transition-colors duration-150 hover:bg-surface hover:text-ink ${TOOLBAR_STYLE[item.key]}`}
-              >
-                {item.key === "link" ? (
-                  <LinkIcon className="size-4" />
-                ) : (
-                  item.label
-                )}
-              </button>
-            ))}
+            {isVerse ? (
+              <span className="px-1 text-[0.75rem] text-muted">
+                Misralar aynan yozilganidek chiqadi.
+              </span>
+            ) : (
+              TOOLBAR.map((item) => (
+                <button
+                  key={item.key}
+                  type="button"
+                  title={item.title}
+                  aria-label={item.title}
+                  onClick={() => wrap(item.before, item.after)}
+                  className={`grid size-8 place-items-center rounded-md text-[0.875rem] text-muted transition-colors duration-150 hover:bg-surface hover:text-ink ${TOOLBAR_STYLE[item.key]}`}
+                >
+                  {item.key === "link" ? (
+                    <LinkIcon className="size-4" />
+                  ) : (
+                    item.label
+                  )}
+                </button>
+              ))
+            )}
             <span className="ml-auto pr-1 text-[0.75rem] text-muted tabular-nums">
-              {words} so'z · {readingMinutes(draft.content)} daq.
+              {words} so'z
+              {config.showReadingTime
+                ? ` · ${readingMinutes(draft.content)} daq.`
+                : ""}
             </span>
           </div>
 
@@ -369,8 +412,12 @@ export function PostEditor({ post }: { post?: Post }) {
             ref={textarea}
             value={draft.content}
             onChange={(event) => set("content", event.target.value)}
-            placeholder="Markdown bilan yozing. ## sarlavha, **qalin**, > iqtibos …"
-            aria-label="Yozuv matni"
+            placeholder={
+              isVerse
+                ? "Misralarni qatorma-qator yozing."
+                : "Markdown bilan yozing. ## sarlavha, **qalin**, > iqtibos …"
+            }
+            aria-label={`${config.singular} matni`}
             spellCheck={false}
             className="mt-3 min-h-[55vh] flex-1 resize-none rounded-none border-0 px-0 font-mono text-[0.9375rem] leading-[1.75] focus:border-0 focus-visible:outline-1 focus-visible:outline-offset-4 lg:min-h-0"
           />
@@ -386,6 +433,10 @@ export function PostEditor({ post }: { post?: Post }) {
             <p className="rounded-xl border border-dashed border-line px-5 py-12 text-center text-[0.9375rem] text-muted">
               Matn yozilgach, shu yerda saytdagidek ko'rinadi.
             </p>
+          ) : isVerse ? (
+            // Matn React orqali chiqadi: HTML sifatida talqin qilinmaydi,
+            // qator uzilishlari va bo'sh qatorlar esa joyida qoladi.
+            <div className="prose whitespace-pre-wrap">{draft.content}</div>
           ) : (
             <article
               className={`prose transition-opacity duration-200 ${
@@ -402,6 +453,35 @@ export function PostEditor({ post }: { post?: Post }) {
             pane === "settings" ? "" : "hidden"
           }`}
         >
+          <div>
+            <p className="text-[0.875rem] font-medium text-ink-soft">Bo'lim</p>
+            <div
+              role="group"
+              aria-label="Bo'lim"
+              className="mt-1.5 flex flex-wrap items-center gap-1 rounded-lg border border-line p-1"
+            >
+              {SECTIONS.map((item) => (
+                <button
+                  key={item.key}
+                  type="button"
+                  aria-pressed={draft.section === item.key}
+                  onClick={() => set("section", item.key)}
+                  className={`rounded-md px-3 py-1.5 text-[0.875rem] transition-colors duration-150 ${
+                    draft.section === item.key
+                      ? "bg-surface font-medium text-ink"
+                      : "text-muted hover:text-ink"
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+            <p className="mt-1.5 text-[0.8125rem] text-muted">
+              «{config.label}» ro'yxatida chiqadi: {site.domain}
+              {config.path}
+            </p>
+          </div>
+
           <Field
             label="Manzil (slug)"
             hint={`${site.domain}/${effectiveSlug || "…"}`}
@@ -440,31 +520,33 @@ export function PostEditor({ post }: { post?: Post }) {
             )}
           </Field>
 
-          <Field label="Teglar" hint="Vergul bilan ajrating. Ko'pi bilan 6 ta.">
-            {({ id, describedBy }) => (
-              <>
-                <Input
-                  id={id}
-                  aria-describedby={describedBy}
-                  value={draft.tags}
-                  onChange={(event) => set("tags", event.target.value)}
-                  placeholder="tabiat, kundalik"
-                />
-                {tagList.length > 0 ? (
-                  <ul className="mt-2 flex flex-wrap gap-1.5">
-                    {tagList.map((tag) => (
-                      <li
-                        key={tag}
-                        className="rounded-full bg-accent-soft px-2.5 py-0.5 text-[0.8125rem] text-accent-ink"
-                      >
-                        {tag}
-                      </li>
-                    ))}
-                  </ul>
-                ) : null}
-              </>
-            )}
-          </Field>
+          {config.useTags ? (
+            <Field label="Teglar" hint="Vergul bilan ajrating. Ko'pi bilan 6 ta.">
+              {({ id, describedBy }) => (
+                <>
+                  <Input
+                    id={id}
+                    aria-describedby={describedBy}
+                    value={draft.tags}
+                    onChange={(event) => set("tags", event.target.value)}
+                    placeholder="tabiat, kundalik"
+                  />
+                  {tagList.length > 0 ? (
+                    <ul className="mt-2 flex flex-wrap gap-1.5">
+                      {tagList.map((tag) => (
+                        <li
+                          key={tag}
+                          className="rounded-full bg-accent-soft px-2.5 py-0.5 text-[0.8125rem] text-accent-ink"
+                        >
+                          {tag}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </>
+              )}
+            </Field>
+          ) : null}
 
           <Field
             label="Muqova rasmi (ixtiyoriy)"

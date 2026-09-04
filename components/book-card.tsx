@@ -51,19 +51,9 @@ export function BookCard({ book }: { book: Book }) {
           {book.title}
         </h2>
 
-        {book.tagline ? (
-          <p className="mt-1.5 font-sans text-[0.8125rem] text-balance text-accent-ink italic">
-            {book.tagline}
-          </p>
-        ) : null}
-
-        <p className="mt-2.5 text-[0.9375rem] leading-[1.6] text-muted">
-          {book.description}
-        </p>
-
-        {/* `mt-auto` — hajm va tugma har doim kartochkaning tagida turadi.
-            Tavsif uzun yoki qisqaligidan qat'i nazar, yonma-yon turgan
-            kartochkalarda tugmalar bir chiziqda bo'ladi. */}
+        {/* `mt-auto` — hajm va tugma har doim kartochkaning tagida turadi,
+            ya'ni sarlavha bir yoki ikki qatorligidan qat'i nazar yonma-yon
+            turgan kartochkalarda tugmalar bir chiziqda bo'ladi. */}
         <div className="mt-auto pt-4 sm:pt-5">
           <p className="font-sans text-[0.8125rem] text-muted tabular-nums">
             PDF · {pagesLabel(book.pages)} · {formatFileSize(book.size)}

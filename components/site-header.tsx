@@ -2,10 +2,16 @@ import Link from "next/link";
 import { LeafMark } from "./marks";
 import { MobileNav } from "./mobile-nav";
 import { ThemeToggle } from "./theme-toggle";
+import { SECTIONS } from "@/lib/sections";
 import { site } from "@/lib/site";
 
+// Bo'limlar `lib/sections.ts` dan keladi: yangi bo'lim qo'shilganda menyu
+// o'zi to'ldiriladi. Qolgan havolalar bo'limga bog'liq emas.
 const NAV = [
-  { href: "/yozuvlar", label: "Yozuvlar" },
+  ...SECTIONS.filter((section) => section.inNav).map((section) => ({
+    href: section.path,
+    label: section.label,
+  })),
   { href: "/kitoblar", label: "Kitoblar" },
   { href: "/kundaliklar", label: "Kundaliklar" },
   { href: "/haqida", label: "Haqida" },
@@ -25,8 +31,8 @@ export function SiteHeader() {
         </Link>
 
         <div className="flex items-center gap-0.5 sm:gap-2">
-          {/* Telefonda havolalar sig'maydi — ular MobileNav ichida. */}
-          <nav aria-label="Asosiy" className="hidden items-center gap-1 sm:flex">
+          {/* Tor ekranda havolalar sig'maydi — ular MobileNav ichida. */}
+          <nav aria-label="Asosiy" className="hidden items-center gap-1 md:flex">
             {NAV.map((item) => (
               <Link
                 key={item.href}
@@ -38,7 +44,7 @@ export function SiteHeader() {
             ))}
           </nav>
 
-          <span aria-hidden className="mx-1 hidden h-4 w-px bg-line sm:block" />
+          <span aria-hidden className="mx-1 hidden h-4 w-px bg-line md:block" />
           <ThemeToggle />
           <MobileNav items={NAV} />
         </div>

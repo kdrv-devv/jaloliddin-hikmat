@@ -5,8 +5,9 @@ import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { EyeIcon, PencilIcon, SearchIcon, TrashIcon } from "@/components/icons";
 import { formatDate, viewsLabel } from "@/lib/format";
+import { getSection, type SectionKey } from "@/lib/sections";
 import type { Post } from "@/lib/types";
-import { Button, Input, StatusBadge, useToast } from "./ui";
+import { Button, Input, SectionBadge, StatusBadge, useToast } from "./ui";
 
 type Filter = "all" | "published" | "draft";
 
@@ -16,7 +17,14 @@ const FILTERS: { value: Filter; label: string }[] = [
   { value: "draft", label: "Qoralama" },
 ];
 
-export function PostsTable({ posts: initial }: { posts: Post[] }) {
+export function PostsTable({
+  posts: initial,
+  /** Ro'yxat qaysi bo'lim bo'yicha suzilgani — bo'sh holat matni uchun. */
+  section,
+}: {
+  posts: Post[];
+  section?: SectionKey;
+}) {
   const router = useRouter();
   const toast = useToast();
   const [posts, setPosts] = useState(initial);
@@ -114,7 +122,9 @@ export function PostsTable({ posts: initial }: { posts: Post[] }) {
       {visible.length === 0 ? (
         <p className="mt-10 rounded-xl border border-dashed border-line px-5 py-10 text-center text-[0.9375rem] text-muted">
           {posts.length === 0
-            ? "Hali yozuv yo'q. Yuqoridagi «Yangi yozuv» tugmasidan boshlang."
+            ? section
+              ? `«${getSection(section).label}» bo'limida hali yozuv yo'q. Yuqoridagi tugmadan boshlang.`
+              : "Hali yozuv yo'q. Yuqoridagi «Yangi yozuv» tugmasidan boshlang."
             : "Bu shartga mos yozuv topilmadi."}
         </p>
       ) : (
@@ -130,6 +140,7 @@ export function PostsTable({ posts: initial }: { posts: Post[] }) {
                     >
                       {post.title}
                     </Link>
+                    <SectionBadge section={post.section} />
                     <StatusBadge status={post.status} />
                   </div>
                   <p className="mt-1 truncate text-[0.8125rem] text-muted">

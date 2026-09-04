@@ -17,6 +17,7 @@ import {
   parsePageParam,
 } from "@/lib/pagination";
 import { countPublishedPosts, listPublishedPosts } from "@/lib/posts";
+import { DEFAULT_SECTION } from "@/lib/sections";
 import { getPageDefinition, pageSeo } from "@/lib/content";
 import { blog, graph, itemList, person, webPage, website } from "@/lib/schema";
 import {
@@ -77,8 +78,12 @@ export default async function HomePage(props: PageProps<"/">) {
   if (page === null) notFound();
 
   const [posts, total, content] = await Promise.all([
-    listPublishedPosts({ skip: pageSkip(page), limit: POSTS_PER_PAGE }),
-    countPublishedPosts(),
+    listPublishedPosts({
+      skip: pageSkip(page),
+      limit: POSTS_PER_PAGE,
+      section: DEFAULT_SECTION,
+    }),
+    countPublishedPosts(undefined, DEFAULT_SECTION),
     getPageContent("bosh"),
   ]);
 

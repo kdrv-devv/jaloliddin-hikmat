@@ -7,8 +7,8 @@ import { CloseIcon, MenuIcon } from "./icons";
 /**
  * Tor ekrandagi menyu.
  *
- * `sm` dan boshlab havolalar sarlavhada yonma-yon turadi; telefonda esa
- * to'rttasi sig'maydi, shuning uchun ular shu tugma ostiga yig'iladi.
+ * `md` dan boshlab havolalar sarlavhada yonma-yon turadi; undan tor
+ * ekranda oltitasi sig'maydi, shuning uchun ular shu tugma ostiga yig'iladi.
  * Panel sarlavhaning o'ziga nisbatan joylashadi (`header` — `relative`).
  */
 export function MobileNav({
@@ -35,7 +35,7 @@ export function MobileNav({
         aria-expanded={open}
         aria-controls="mobil-menyu"
         aria-label={open ? "Menyuni yopish" : "Menyuni ochish"}
-        className="flex size-9 items-center justify-center rounded-full text-muted transition-colors duration-200 hover:bg-surface hover:text-ink sm:hidden"
+        className="flex size-9 items-center justify-center rounded-full text-muted transition-colors duration-200 hover:bg-surface hover:text-ink md:hidden"
       >
         {open ? (
           <CloseIcon className="size-[1.15rem]" />
@@ -47,7 +47,7 @@ export function MobileNav({
       {open ? (
         <div
           id="mobil-menyu"
-          className="absolute inset-x-0 top-full border-b border-line bg-bg/98 backdrop-blur-[12px] sm:hidden"
+          className="absolute inset-x-0 top-full border-b border-line bg-bg/98 backdrop-blur-[12px] md:hidden"
         >
           <nav aria-label="Asosiy" className="mx-auto max-w-[52rem] px-4 py-2">
             <ul>

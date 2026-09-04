@@ -5,6 +5,7 @@ import { EmptyState } from "@/components/empty-state";
 import { JsonLd } from "@/components/json-ld";
 import { PostList } from "@/components/post-list";
 import { countPublishedPosts, listPublishedPosts, listTags } from "@/lib/posts";
+import { DEFAULT_SECTION } from "@/lib/sections";
 import {
   breadcrumbs,
   graph,
@@ -18,7 +19,7 @@ import { alternates, pageOpenGraph, site } from "@/lib/site";
 export const revalidate = 60;
 
 export async function generateStaticParams() {
-  const tags = await listTags();
+  const tags = await listTags(DEFAULT_SECTION);
   return tags.map(({ tag }) => ({ tag }));
 }
 
@@ -27,7 +28,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { tag } = await props.params;
   const decoded = decodeURIComponent(tag);
-  const total = await countPublishedPosts(decoded);
+  const total = await countPublishedPosts(decoded, DEFAULT_SECTION);
   const title = `«${decoded}» yozuvlari`;
   const description =
     total > 0
@@ -63,7 +64,10 @@ function tagPath(tag: string): string {
 export default async function TagPage(props: PageProps<"/teg/[tag]">) {
   const { tag } = await props.params;
   const decoded = decodeURIComponent(tag);
-  const posts = await listPublishedPosts({ tag: decoded });
+  const posts = await listPublishedPosts({
+    tag: decoded,
+    section: DEFAULT_SECTION,
+  });
   const path = tagPath(decoded);
 
   const jsonLd = graph(

@@ -13,6 +13,7 @@ import {
   type ReactNode,
 } from "react";
 import { CheckIcon, CloseIcon, SpinnerIcon } from "@/components/icons";
+import { getSection, type SectionKey } from "@/lib/sections";
 
 /* --- Tugma -------------------------------------------------------------- */
 
@@ -128,6 +129,16 @@ export function StatusBadge({ status }: { status: "draft" | "published" }) {
         className={`size-[6px] rounded-full ${published ? "bg-primary" : "bg-muted"}`}
       />
       {published ? "Nashrda" : "Qoralama"}
+    </span>
+  );
+}
+
+/* --- Bo'lim belgisi ----------------------------------------------------- */
+
+export function SectionBadge({ section }: { section: SectionKey }) {
+  return (
+    <span className="inline-flex shrink-0 items-center rounded-full bg-accent-soft px-2.5 py-0.5 text-[0.75rem] font-medium text-accent-ink">
+      {getSection(section).singular}
     </span>
   );
 }

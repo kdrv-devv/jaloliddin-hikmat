@@ -6,10 +6,12 @@ import { JsonLd } from "@/components/json-ld";
 import { SprigDivider } from "@/components/marks";
 import { ReadingProgress } from "@/components/reading-progress";
 import { TagRow } from "@/components/tag-pill";
+import { Verse } from "@/components/verse";
 import { ViewCounter } from "@/components/view-counter";
 import { formatDate, readingLabel } from "@/lib/format";
 import { renderMarkdown } from "@/lib/markdown";
 import { getNeighbours, getPublishedPost, listAllSlugs } from "@/lib/posts";
+import { getSection } from "@/lib/sections";
 import {
   blog,
   blogPosting,
@@ -36,10 +38,13 @@ export async function generateMetadata(
   // Yo'q sahifa qidiruvga tushmasin.
   if (!post) return { title: "Topilmadi", robots: { index: false, follow: false } };
 
+  const section = getSection(post.section);
+  const tags = section.useTags ? post.tags : [];
+
   return {
     title: post.title,
     description: post.excerpt,
-    keywords: post.tags.length > 0 ? post.tags : undefined,
+    keywords: tags.length > 0 ? tags : undefined,
     authors: [{ name: site.name, url: absoluteUrl("/haqida") }],
     alternates: alternates(`/${post.slug}`),
     openGraph: {
@@ -50,7 +55,7 @@ export async function generateMetadata(
       publishedTime: post.publishedAt ?? undefined,
       modifiedTime: post.updatedAt,
       authors: [absoluteUrl("/haqida")],
-      tags: post.tags,
+      tags,
       siteName: site.name,
       locale: site.locale,
     },
@@ -67,10 +72,13 @@ export default async function PostPage(props: PageProps<"/[slug]">) {
   const post = await getPublishedPost(slug);
   if (!post) notFound();
 
+  const section = getSection(post.section);
+  // She'r markdown quvuridan o'tmaydi — qarang: `lib/sections.ts`.
   const [html, neighbours] = await Promise.all([
-    renderMarkdown(post.content),
+    section.renderAs === "verse" ? null : renderMarkdown(post.content),
     getNeighbours(post),
   ]);
+  const tags = section.useTags ? post.tags : [];
 
   const jsonLd = graph(
     website(),
@@ -80,7 +88,7 @@ export default async function PostPage(props: PageProps<"/[slug]">) {
     blogPosting(post),
     breadcrumbs([
       { name: "Bosh sahifa", path: "/" },
-      { name: "Yozuvlar", path: "/yozuvlar" },
+      { name: section.label, path: section.path },
       { name: post.title, path: `/${post.slug}` },
     ]),
   );
@@ -93,11 +101,11 @@ export default async function PostPage(props: PageProps<"/[slug]">) {
       <article className="mx-auto w-full max-w-[44rem] px-5 sm:px-8">
         <header className="pt-10 pb-8 sm:pt-16 sm:pb-10">
           <Link
-            href="/yozuvlar"
+            href={section.path}
             className="group inline-flex items-center gap-1.5 font-sans text-[0.875rem] text-muted transition-colors duration-200 hover:text-primary"
           >
             <ArrowLeftIcon className="size-3.5 transition-transform duration-300 ease-[var(--ease-out-quint)] group-hover:-translate-x-0.5" />
-            Yozuvlar
+            {section.label}
           </Link>
 
           <h1 className="mt-5 font-serif text-[2rem] leading-[1.12] font-medium tracking-[-0.022em] text-balance break-words text-ink sm:text-[2.7rem] sm:leading-[1.08]">
@@ -108,8 +116,12 @@ export default async function PostPage(props: PageProps<"/[slug]">) {
             <time dateTime={post.publishedAt ?? post.createdAt}>
               {formatDate(post.publishedAt ?? post.createdAt)}
             </time>
-            <span aria-hidden className="size-[3px] rounded-full bg-line-strong" />
-            <span>{readingLabel(post.readingMinutes)}</span>
+            {section.showReadingTime ? (
+              <>
+                <span aria-hidden className="size-[3px] rounded-full bg-line-strong" />
+                <span>{readingLabel(post.readingMinutes)}</span>
+              </>
+            ) : null}
             <span aria-hidden className="size-[3px] rounded-full bg-line-strong" />
             <ViewCounter postId={post.id} initial={post.views} />
           </p>
@@ -127,23 +139,24 @@ export default async function PostPage(props: PageProps<"/[slug]">) {
           />
         ) : null}
 
-        <div
-          className="prose"
-          dangerouslySetInnerHTML={{ __html: html }}
-        />
+        {html === null ? (
+          <Verse text={post.content} />
+        ) : (
+          <div className="prose" dangerouslySetInnerHTML={{ __html: html }} />
+        )}
 
         <footer className="mt-14 sm:mt-20">
           <SprigDivider />
 
-          {post.tags.length > 0 ? (
+          {tags.length > 0 ? (
             <div className="mt-10">
-              <TagRow tags={post.tags} />
+              <TagRow tags={tags} />
             </div>
           ) : null}
 
           {neighbours.previous || neighbours.next ? (
             <nav
-              aria-label="Boshqa yozuvlar"
+              aria-label="Shu bo'limdagi boshqa yozuvlar"
               className="mt-10 grid gap-3 border-t border-line pt-8 sm:grid-cols-2"
             >
               {neighbours.next ? (
@@ -153,7 +166,7 @@ export default async function PostPage(props: PageProps<"/[slug]">) {
                 >
                   <span className="flex items-center gap-1.5 font-sans text-[0.8125rem] text-muted">
                     <ArrowLeftIcon className="size-3.5 transition-transform duration-300 ease-[var(--ease-out-quint)] group-hover:-translate-x-0.5" />
-                    Keyingi yozuv
+                    Keyingisi
                   </span>
                   <span className="mt-1.5 block font-serif text-[1.0625rem] leading-snug text-ink transition-colors duration-200 group-hover:text-primary">
                     {neighbours.next.title}
@@ -168,7 +181,7 @@ export default async function PostPage(props: PageProps<"/[slug]">) {
                   className="group rounded-lg border border-line px-4 py-4 transition-colors duration-200 hover:border-line-strong hover:bg-surface sm:text-right"
                 >
                   <span className="flex items-center gap-1.5 font-sans text-[0.8125rem] text-muted sm:justify-end">
-                    Oldingi yozuv
+                    Oldingisi
                     <ArrowRightIcon className="size-3.5 transition-transform duration-300 ease-[var(--ease-out-quint)] group-hover:translate-x-0.5" />
                   </span>
                   <span className="mt-1.5 block font-serif text-[1.0625rem] leading-snug text-ink transition-colors duration-200 group-hover:text-primary">

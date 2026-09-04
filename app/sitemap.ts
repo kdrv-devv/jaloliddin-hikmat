@@ -38,6 +38,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
+      url: absoluteUrl("/sherlar"),
+      lastModified: newestPost,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: absoluteUrl("/hr"),
+      lastModified: newestPost,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
       url: absoluteUrl("/kitoblar"),
       // Ro'yxat kodda turadi — sana sifatida chiqarishga arziydigan
       // o'zgaruvchi qiymat yo'q.
