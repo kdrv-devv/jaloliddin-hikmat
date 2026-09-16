@@ -51,7 +51,7 @@ function resolveSiteUrl(): string {
 const url = resolveSiteUrl();
 
 export const site = {
-  name: "Jaloliddin Hikmat ",
+  name: "Jaloliddin Hikmat",
   domain: new URL(url).host,
   title: "Jaloliddin — yozuvlar",
   tagline: "Sekin o'qish uchun yozilgan kundalik va esselar.",
